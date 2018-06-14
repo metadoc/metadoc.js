@@ -73,6 +73,26 @@ class Generator extends ProductionLine {
       this.DATA.bus.set(evt.label, evt)
     })
 
+    // Handle event deprecation
+    BUS.on('deprecate.event', (originalEvent, replacementEvent = null) => {
+      let original = this.DATA.bus.get(originalEvent.label)
+
+      if (original) {
+        original.deprecated = true
+        original.deprecationReplacement = originalEvent.deprecationReplacement
+
+        if (original.description === null) {
+          original.description = 'Deprecated'
+        }
+
+        this.DATA.bus.set(original.label, original)
+      }
+
+      if (replacementEvent && !this.DATA.bus.get(replacementEvent.label)) {
+        this.DATA.bus.set(replacementEvent.label, replacementEvent)
+      }
+    })
+
     class LocalFile extends this.File {
       constructor () {
         super(...arguments)
