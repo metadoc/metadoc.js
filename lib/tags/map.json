@@ -1,0 +1,9 @@
+{
+  "event": "fires",
+  "triggers": "fires",
+  "trigger": "fires",
+  "function": "method",
+  "arg": "parameter",
+  "argument": "parameter",
+  "returns": "return"
+}
