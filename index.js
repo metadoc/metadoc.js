@@ -21,6 +21,7 @@ global.DOC = Object.assign(DOC, {
   Event: require('./lib/Event'),
   Method: require('./lib/Method'),
   Parameter: require('./lib/Parameter'),
+  Property: require('./lib/Property'),
   RawSnippet: require('./lib/Snippet')
 })
 
@@ -40,7 +41,7 @@ class Generator extends ProductionLine {
       globals: [],
       classes: new Map(),
       exceptions: new Map(),
-      requires: {},
+      requires: new Set(),
       bus: new Map() // NGN.BUS events
     }
 
@@ -91,6 +92,11 @@ class Generator extends ProductionLine {
       if (replacementEvent && !this.DATA.bus.get(replacementEvent.label)) {
         this.DATA.bus.set(replacementEvent.label, replacementEvent)
       }
+    })
+
+    // Recognize global custom exceptions
+    BUS.on('register.exception', e => {
+      this.DATA.exceptions.set(e.label, e)
     })
 
     class LocalFile extends this.File {
@@ -170,10 +176,10 @@ class Generator extends ProductionLine {
 
   get data () {
     return {
-      globals: this.DATA.globals,
+      // globals: this.DATA.globals,
       classes: this.expand(this.DATA.classes),
-      exceptions: this.DATA.exceptions,
-      requires: this.DATA.requires,
+      exceptions: DOC.Class.prototype.mapToObject(this.DATA.exceptions),
+      requires: Array.from(this.DATA.requires),
       bus: DOC.Class.prototype.mapToObject(this.DATA.bus)
     }
   }
@@ -197,6 +203,12 @@ class Generator extends ProductionLine {
     let sourcefile = new this.LocalFile(file)
     let ast = Parser.parse(sourcefile.content, this.STANDARD_OPTIONS)
 
+    // Recognize custom exceptions/errors
+    let fullFile = new DOC.RawSnippet(ast, sourcefile)
+
+    fullFile.on('register.exception', () => console.log('Exception recognized.'))
+    fullFile.detectExceptions()
+
     const me = this
     traverse(ast).forEach(function () {
       if (this.isLeaf) {
@@ -210,23 +222,22 @@ class Generator extends ProductionLine {
               me.emit('register.class', Class)
 
               break
+
+            case 'callexpression':
+              if (this.parent.node.callee && this.parent.node.callee.name.toLowerCase() === 'require') {
+                if (this.parent.node.arguments.length === 1) {
+                  me.DATA.requires.add(this.parent.node.arguments[0].value)
+                } else {
+                  me.warn(`Invalid require statement found at ${file}:${this.parent.node.loc.start.line}:${this.parent.node.loc.start.column}`)
+                }
+              }
+
+              break
           }
         }
       }
-      // if (Array.isArray(node)) {
-      //
-      // } else if (node.hasOwnProperty('type')) {
-      //   switch (node.type.toLowerCase()) {
-      //     case 'classdeclaration':
-      //       let Class = new NgnClass(node, sourcefile)
-      //       Class.on('warning', msg => this.emit('warning', msg))
-      //
-      //       this.emit('class', Class)
-      //
-      //       break
-      //   }
-      // }
     })
+
     // if (!this.FILES.hasOwnProperty(file)) {
     //   let source = new this.File(file)
     //   let options = {
@@ -273,7 +284,7 @@ const Builder = new Generator({
       Builder.source = process.argv[process.argv.indexOf('--source') + 1]
       Builder.output = path.join(process.cwd(), './docs')
       Builder.createJson()
-      Builder.on('complete', () => console.log(JSON.stringify(Builder.data, null, 2)))
+      Builder.on('complete', () => require('fs').writeFileSync(path.resolve('./test.json'), JSON.stringify(Builder.data, null, 2)))
     }
   }
 })

@@ -1,0 +1,170 @@
+{
+  "classes": {
+    "NGNDataRepresentation": {
+      "type": "class",
+      "label": "NGNDataRepresentation",
+      "description": null,
+      "code": "class NGNDataRepresentation extends NGN.EventEmitter { // eslint-disable-line\n  /**\n   * Create a new representation\n   * @param {Object} [cfg={}]\n   * The config contains stuff.\n   * @param {Boolean} bb\n   * das boolean\n   * @fires {Object,test:String} eventguy\n   * This is a strange name for an event.\n   * @fires {String|Object} blerg\n   * This is a strange name for an event.\n   */\n  constructor (cfg) {\n    super()\n\n    this.blahblah = true\n\n    return 1\n  }\n\n  get mofo () {\n    return false\n  }\n\n  anotherFn () {\n    this.emit('blerg', {some: 'value'})\nlet x = 'test'\n    this.delayEmit('ablergy', 200, x)\nNGN.BUS.emit('yo')\n    this.emit(Symbol('test'), x)\n\n\n    this.funnel(['a', 'b', 'c'], 'd')\n    this.threshold('d', 3, 'THOLD', {blah: 1})\n\n    this.deprecate('nomore', 'blerg')\n    return\n  }\n}",
+      "tags": {},
+      "exceptions": {},
+      "events": {},
+      "start": {
+        "line": 20,
+        "column": 0
+      },
+      "end": {
+        "line": 58,
+        "column": 1
+      },
+      "sourcefile": "/Users/cbutler/Workspace/Ventures/Author.io/Products/NGN/Components/CORE2/src/data/Representation.js",
+      "singleton": false,
+      "extends": "NGN.EventEmitter",
+      "configuration": {},
+      "properties": {
+        "mofo": {
+          "type": "property",
+          "label": "mofo",
+          "description": null,
+          "code": "get mofo () {\n    return false\n  }",
+          "start": {
+            "line": 40,
+            "column": 2
+          },
+          "end": {
+            "line": 42,
+            "column": 3
+          },
+          "datatype": "boolean",
+          "readable": true,
+          "writable": false,
+          "configuration": false
+        }
+      },
+      "methods": {
+        "constructor": {
+          "type": "method",
+          "label": "constructor",
+          "description": null,
+          "code": "constructor (cfg) {\n    super()\n\n    this.blahblah = true\n\n    return 1\n  }",
+          "tags": {},
+          "exceptions": {},
+          "start": {
+            "line": 32,
+            "column": 2
+          },
+          "end": {
+            "line": 38,
+            "column": 3
+          },
+          "parameters": {
+            "cfg": {
+              "type": "parameter",
+              "label": "cfg",
+              "description": null,
+              "code": "cfg",
+              "start": {
+                "line": 32,
+                "column": 15
+              },
+              "end": {
+                "line": 32,
+                "column": 18
+              },
+              "datatype": "any",
+              "required": false
+            }
+          },
+          "returnType": "number",
+          "returnDescription": "",
+          "kind": "constructor",
+          "generator": false,
+          "static": false,
+          "computed": false,
+          "async": false
+        },
+        "anotherFn": {
+          "type": "method",
+          "label": "anotherFn",
+          "description": null,
+          "code": "anotherFn () {\n    this.emit('blerg', {some: 'value'})\nlet x = 'test'\n    this.delayEmit('ablergy', 200, x)\nNGN.BUS.emit('yo')\n    this.emit(Symbol('test'), x)\n\n\n    this.funnel(['a', 'b', 'c'], 'd')\n    this.threshold('d', 3, 'THOLD', {blah: 1})\n\n    this.deprecate('nomore', 'blerg')\n    return\n  }",
+          "tags": {},
+          "exceptions": {},
+          "start": {
+            "line": 44,
+            "column": 2
+          },
+          "end": {
+            "line": 57,
+            "column": 3
+          },
+          "parameters": {},
+          "returnType": "void",
+          "returnDescription": "void",
+          "kind": "method",
+          "generator": false,
+          "static": false,
+          "computed": false,
+          "async": false
+        }
+      }
+    }
+  },
+  "exceptions": {
+    "InvalidConfigurationError": {
+      "type": "InvalidConfigurationError",
+      "label": "InvalidConfigurationError",
+      "description": null,
+      "code": "NGN.createException({\n  name: 'InvalidConfigurationError',\n  type: 'InvalidConfigurationError',\n  severity: 'critical',\n  message: 'Invalid configuration.',\n  category: 'programmer',\n  custom: {\n    help: 'See the documentation for the proper configuration.',\n    cause: 'The configuration specified was marked as invalid or caused an error during instantiation.'\n  }\n})",
+      "tags": {
+        "help": {
+          "value": "help",
+          "description": "See the documentation for the proper configuration.",
+          "type": "help",
+          "line": 71,
+          "raw": "help: 'See the documentation for the proper configuration.'"
+        },
+        "cause": {
+          "value": "cause",
+          "description": "The configuration specified was marked as invalid or caused an error during instantiation.",
+          "type": "cause",
+          "line": 72,
+          "raw": "cause: 'The configuration specified was marked as invalid or caused an error during instantiation.'"
+        }
+      },
+      "start": {
+        "line": 64,
+        "column": 0
+      },
+      "end": {
+        "line": 74,
+        "column": 2
+      },
+      "name": "InvalidConfigurationError",
+      "severity": "critical",
+      "message": "Invalid configuration.",
+      "category": "programmer"
+    }
+  },
+  "requires": [
+    "fs"
+  ],
+  "bus": {
+    "yo": {
+      "type": "event",
+      "label": "yo",
+      "description": null,
+      "code": "NGN.BUS.emit('yo')",
+      "start": {
+        "line": 48,
+        "column": 0
+      },
+      "end": {
+        "line": 48,
+        "column": 18
+      },
+      "parameters": {},
+      "deprecated": false,
+      "deprecationReplacement": null
+    }
+  }
+}
