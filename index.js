@@ -63,11 +63,11 @@ class Generator extends ProductionLine {
     })
 
     this.on('register.class', snippet => {
-      console.log('Heard class')
       this.DATA.classes.set(snippet.label, snippet)
     })
 
     this.on('warning', msg => this.warn(msg))
+    BUS.on('warning', msg => this.warn(msg))
 
     // Recognize global events on the NGN.BUS
     BUS.on('register.event', evt => {
@@ -109,6 +109,27 @@ class Generator extends ProductionLine {
         this.comments = this.comments.map((comment, cIndex) => {
           let lines = this.getLineByIndex(comment.range[0], comment.range[1])
           let parsedComment = JSCommentParser(comment.comment)
+
+          parsedComment = parsedComment.map(pComment => {
+            pComment.tags = pComment.tags.map(tag => {
+              if (tag.name.indexOf('\n') === 0) {
+                tag.description = `${tag.name} ${tag.description}`.trim()
+                tag.name = null
+              }
+
+              let match = /\s?\((.*)\).*/.exec(tag.description.trim())
+              if (match !== null) {
+                tag.description = tag.description.replace(`(${match[1]})`, '').trim()
+                tag.options = match[1].split(/,|\|/)
+              } else {
+                tag.options = null
+              }
+
+              return tag
+            })
+
+            return pComment
+          })
 
           comment = Object.assign(parsedComment.length > 0 ? parsedComment[0] : {}, {
             type: comment.comment.indexOf('\n') > 0 ? 'block' : 'single',
@@ -210,59 +231,46 @@ class Generator extends ProductionLine {
     fullFile.detectExceptions()
 
     const me = this
+
     traverse(ast).forEach(function () {
-      if (this.isLeaf) {
-        if (this.key === 'type') {
-          switch (this.node.toLowerCase()) {
-            case 'classdeclaration':
-              let Class = new NgnClass(this.parent.node, sourcefile)
+      try {
+        if (this.isLeaf) {
+          if (this.key === 'type') {
+            switch (this.node.toLowerCase()) {
+              case 'classdeclaration':
+                let Class = new NgnClass(this.parent.node, sourcefile)
 
-              Class.on('warning', msg => me.emit('warning', msg))
+                Class.on('warning', msg => me.emit('warning', msg))
 
-              me.emit('register.class', Class)
+                me.emit('register.class', Class)
 
-              break
+                break
 
-            case 'callexpression':
-              if (this.parent.node.callee && this.parent.node.callee.name.toLowerCase() === 'require') {
-                if (this.parent.node.arguments.length === 1) {
-                  me.DATA.requires.add(this.parent.node.arguments[0].value)
-                } else {
-                  me.warn(`Invalid require statement found at ${file}:${this.parent.node.loc.start.line}:${this.parent.node.loc.start.column}`)
+              case 'callexpression':
+                if (this.parent.node.callee && this.parent.node.callee.name && this.parent.node.callee.name.toLowerCase() === 'require') {
+                  if (this.parent.node.arguments.length === 1) {
+                    me.DATA.requires.add(this.parent.node.arguments[0].value)
+                  } else {
+                    me.warn(`Invalid require statement found at ${file}:${this.parent.node.loc.start.line}:${this.parent.node.loc.start.column}`)
+                  }
                 }
-              }
 
-              break
+                break
+            }
           }
         }
+      } catch (e) {
+        console.error(e)
       }
     })
 
-    // if (!this.FILES.hasOwnProperty(file)) {
-    //   let source = new this.File(file)
-    //   let options = {
-    //     loc: true,
-    //     ranges: true,
-    //     skipShebang: true,
-    //     next: true,
-    //     jsx: false
-    //     // tolerant: true
+    // sourcefile.comments.forEach(comment => {
+    //   // console.log(comment)
+    //   if (!comment.processed) {
+    //     this.warn('Unprocessed')
+    //     console.log(comment)
     //   }
-    //
-    //   if (typeof processorFn === 'function') {
-    //     options.delegate = processorFn
-    //   }
-    //
-    //   this.FILES[file] = {
-    //     source,
-    //     comments: [],
-    //     ast: Parser.parseScript(source.content, options)
-    //   }
-    // } else {
-    //   this.warn(`Parse cache used for ${this.relativePath(file)}`)
-    // }
-    //
-    // return this.FILES[file]
+    // })
   }
 
   createJson () {

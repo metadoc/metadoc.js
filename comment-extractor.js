@@ -8,7 +8,7 @@ module.exports = code => {
       if (match[i] !== undefined) {
         let data = {
           comment: match[i],
-          range: [match.index, match.index + match[i].length - (match[i].indexOf('\n') >= 0 ? 0 : 1)]
+          range: [match.index, match.index + match[i].length - (match[i].indexOf('\n') >= 0 && match.input.substr(match.input.length - 1, 1) !== '\n' ? 0 : 1)]
         }
 
         comments.push(data)

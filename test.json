@@ -1,77 +1,439 @@
 {
   "classes": {
-    "NGNDataRepresentation": {
+    "NGN.DATA.Representation": {
       "type": "class",
-      "label": "NGNDataRepresentation",
-      "description": null,
-      "code": "class NGNDataRepresentation extends NGN.EventEmitter { // eslint-disable-line\n  /**\n   * Create a new representation\n   * @param {Object} [cfg={}]\n   * The config contains stuff.\n   * @param {Boolean} bb\n   * das boolean\n   * @fires {Object,test:String} eventguy\n   * This is a strange name for an event.\n   * @fires {String|Object} blerg\n   * This is a strange name for an event.\n   */\n  constructor (cfg) {\n    super()\n\n    this.blahblah = true\n\n    return 1\n  }\n\n  get mofo () {\n    return false\n  }\n\n  anotherFn () {\n    this.emit('blerg', {some: 'value'})\nlet x = 'test'\n    this.delayEmit('ablergy', 200, x)\nNGN.BUS.emit('yo')\n    this.emit(Symbol('test'), x)\n\n\n    this.funnel(['a', 'b', 'c'], 'd')\n    this.threshold('d', 3, 'THOLD', {blah: 1})\n\n    this.deprecate('nomore', 'blerg')\n    return\n  }\n}",
+      "label": "NGN.DATA.Representation",
+      "description": "A data representation is a customized view of a model or\na store. Representations exist to format data from a model\nor store in a manner suitable for a particular purpose.\n\nFor example, a representation may need to calculate data\nattributes differently for different purposes, such as API\noutput for a system or a website. Many API's utilize an `href`\ndata attribute that contains the base URL of the server plus\nthe ID of a model. The URL may only be known at runtime, making\nit difficult to represent this attribute as a generic virtual\nfield.\n\nRepresentations can also be used to change the format entirely,\nsuch as outputting data as XML instead of JSON.",
+      "code": "// [PARTIAL]\n\n/**\n * @class NGN.DATA.Representation\n * A data representation is a customized view of a model or\n * a store. Representations exist to format data from a model\n * or store in a manner suitable for a particular purpose.\n *\n * For example, a representation may need to calculate data\n * attributes differently for different purposes, such as API\n * output for a system or a website. Many API's utilize an `href`\n * data attribute that contains the base URL of the server plus\n * the ID of a model. The URL may only be known at runtime, making\n * it difficult to represent this attribute as a generic virtual\n * field.\n *\n * Representations can also be used to change the format entirely,\n * such as outputting data as XML instead of JSON.\n */\nclass NGNDataRepresentation extends NGN.EventEmitter { // eslint-disable-line\n  /**\n   * @method constructor\n   * Create a new representation\n   * @param {Object} [cfg={}]\n   * The config contains stuff.\n   * @param {Boolean} [bb=true] (test,blah)\n   * das boolean\n   * @fires {Object,test:String} eventguy\n   * This is a strange name for an event.\n   * @fires {String|Object} blerg\n   * This is a strange name for an event.\n   * @todo This buds for you\n   * @todo This turd's for you\n   * @todo This buds for you too\n   * @todo This turd's for you two\n   */\n  constructor (cfg) {\n    super()\n\n    this.blahblah = true\n\n    Object.defineProperties(this, {\n      /**\n       * @cfgproperty\n       * X is a config value\n       */\n      x: NGN.public(true),\n      /**\n       * @property {boolean} nanananan\n       * Batman!\n       */\n      y: NGN.define(true, false, false, 'test'),\n\n      o: {\n        enumerable: false,\n        writable: true,\n        configurable: false,\n        value: 'obj'\n      }\n    })\n\n    /**\n     * @property {number} doesnotexist\n     * This is a test\n     */\n\n    Object.defineProperty(this, {\n      /**\n       * @property {boolean} hot\n       * dog\n       */\n      z: NGN.define(true, false, false, 'another test')\n    })\n\n    return 1\n  }\n\n  get mofo () {\n    return false\n  }\n\n  anotherFn () {\n    this.emit('blerg', {some: 'value'})\nlet x = 'test'\n    this.delayEmit('ablergy', 200, x)\nNGN.BUS.emit('yo')\n    this.emit(Symbol('test'), x)\n\n\n    this.funnel(['a', 'b', 'c'], 'd')\n    this.threshold('d', 3, 'THOLD', {blah: 1})\n\n    this.deprecate('nomore', 'blerg')\n    return\n  }\n}",
       "tags": {},
       "exceptions": {},
-      "events": {},
+      "events": {
+        "eventguy": {
+          "type": "event",
+          "label": "eventguy",
+          "description": "This is a strange name for an event.",
+          "code": "@fires {Object,test:String} eventguy\nThis is a strange name for an event.",
+          "start": {
+            "line": 0,
+            "column": 0
+          },
+          "end": {
+            "line": 0,
+            "column": 0
+          },
+          "flags": [],
+          "parameters": {
+            "payload1": {
+              "type": "parameter",
+              "label": "payload1",
+              "description": null,
+              "code": null,
+              "start": {
+                "line": 0,
+                "column": 0
+              },
+              "end": {
+                "line": 0,
+                "column": 0
+              },
+              "flags": [],
+              "datatype": "object",
+              "required": false,
+              "enum": null
+            },
+            "test": {
+              "type": "parameter",
+              "label": "test",
+              "description": null,
+              "code": null,
+              "start": {
+                "line": 0,
+                "column": 0
+              },
+              "end": {
+                "line": 0,
+                "column": 0
+              },
+              "flags": [],
+              "datatype": "string",
+              "required": false,
+              "enum": null
+            }
+          },
+          "deprecated": false,
+          "deprecationReplacement": null
+        },
+        "blerg": {
+          "type": "event",
+          "label": "blerg",
+          "description": "Replacement for nomore",
+          "code": null,
+          "start": {
+            "line": 0,
+            "column": 0
+          },
+          "end": {
+            "line": 0,
+            "column": 0
+          },
+          "flags": [],
+          "parameters": {},
+          "deprecated": false,
+          "deprecationReplacement": null
+        },
+        "ablergy": {
+          "type": "event",
+          "label": "ablergy",
+          "description": "Event triggered after 200 milliseconds.",
+          "code": "this.delayEmit('ablergy', 200, x)",
+          "start": {
+            "line": 85,
+            "column": 4
+          },
+          "end": {
+            "line": 85,
+            "column": 37
+          },
+          "flags": [],
+          "parameters": {
+            "payload1": {
+              "type": "parameter",
+              "label": "payload1",
+              "description": null,
+              "code": "200",
+              "start": {
+                "line": 85,
+                "column": 30
+              },
+              "end": {
+                "line": 85,
+                "column": 33
+              },
+              "flags": [],
+              "datatype": "any",
+              "required": true,
+              "enum": null
+            },
+            "x": {
+              "type": "parameter",
+              "label": "x",
+              "description": null,
+              "code": "x",
+              "start": {
+                "line": 85,
+                "column": 35
+              },
+              "end": {
+                "line": 85,
+                "column": 36
+              },
+              "flags": [],
+              "datatype": "any",
+              "required": true,
+              "enum": null
+            }
+          },
+          "deprecated": false,
+          "deprecationReplacement": null
+        },
+        "d": {
+          "type": "event",
+          "label": "d",
+          "description": null,
+          "code": "this.funnel(['a', 'b', 'c'], 'd')",
+          "start": {
+            "line": 90,
+            "column": 4
+          },
+          "end": {
+            "line": 90,
+            "column": 37
+          },
+          "flags": [],
+          "parameters": {},
+          "deprecated": false,
+          "deprecationReplacement": null
+        },
+        "THOLD": {
+          "type": "event",
+          "label": "THOLD",
+          "description": "Triggered after `d` is fired 3 times.",
+          "code": "this.threshold('d', 3, 'THOLD', {blah: 1})",
+          "start": {
+            "line": 91,
+            "column": 4
+          },
+          "end": {
+            "line": 91,
+            "column": 46
+          },
+          "flags": [],
+          "parameters": {
+            "payload2": {
+              "type": "parameter",
+              "label": "payload2",
+              "description": null,
+              "code": "{blah: 1}",
+              "start": {
+                "line": 91,
+                "column": 36
+              },
+              "end": {
+                "line": 91,
+                "column": 45
+              },
+              "flags": [],
+              "datatype": "any",
+              "required": true,
+              "enum": null
+            }
+          },
+          "deprecated": false,
+          "deprecationReplacement": null
+        },
+        "nomore": {
+          "type": "event",
+          "label": "nomore",
+          "description": null,
+          "code": null,
+          "start": {
+            "line": 0,
+            "column": 0
+          },
+          "end": {
+            "line": 0,
+            "column": 0
+          },
+          "flags": [],
+          "parameters": {},
+          "deprecated": true,
+          "deprecationReplacement": "blerg"
+        }
+      },
       "start": {
-        "line": 20,
+        "line": 1,
         "column": 0
       },
       "end": {
-        "line": 58,
+        "line": 96,
         "column": 1
       },
+      "flags": [],
       "sourcefile": "/Users/cbutler/Workspace/Ventures/Author.io/Products/NGN/Components/CORE2/src/data/Representation.js",
-      "singleton": false,
       "extends": "NGN.EventEmitter",
-      "configuration": {},
+      "configuration": {
+        "x": {
+          "type": "property",
+          "label": "x",
+          "description": "X is a config value",
+          "code": "x: NGN.public(true)",
+          "start": {
+            "line": 47,
+            "column": 6
+          },
+          "end": {
+            "line": 47,
+            "column": 25
+          },
+          "flags": [],
+          "default": null,
+          "datatype": "any",
+          "readable": true,
+          "writable": false,
+          "configuration": true,
+          "private": false
+        }
+      },
       "properties": {
+        "blahblah": {
+          "type": "property",
+          "label": "blahblah",
+          "description": null,
+          "code": "this.blahblah = true",
+          "start": {
+            "line": 40,
+            "column": 9
+          },
+          "end": {
+            "line": 40,
+            "column": 17
+          },
+          "flags": [],
+          "datatype": "any",
+          "readable": true,
+          "writable": true,
+          "configuration": false,
+          "private": false
+        },
+        "x": {
+          "type": "property",
+          "label": "x",
+          "description": "X is a config value",
+          "code": "x: NGN.public(true)",
+          "start": {
+            "line": 47,
+            "column": 6
+          },
+          "end": {
+            "line": 47,
+            "column": 25
+          },
+          "flags": [],
+          "default": null,
+          "datatype": "any",
+          "readable": true,
+          "writable": false,
+          "configuration": true,
+          "private": false
+        },
+        "nanananan": {
+          "type": "property",
+          "label": "nanananan",
+          "description": "Batman!",
+          "code": "y: NGN.define(true, false, false, 'test')",
+          "start": {
+            "line": 52,
+            "column": 6
+          },
+          "end": {
+            "line": 52,
+            "column": 47
+          },
+          "flags": [],
+          "default": null,
+          "datatype": "boolean",
+          "readable": true,
+          "writable": false,
+          "configuration": false,
+          "private": true
+        },
+        "o": {
+          "type": "property",
+          "label": "o",
+          "description": null,
+          "code": "o: {\n        enumerable: false,\n        writable: true,\n        configurable: false,\n        value: 'obj'\n      }",
+          "start": {
+            "line": 54,
+            "column": 6
+          },
+          "end": {
+            "line": 59,
+            "column": 7
+          },
+          "flags": [],
+          "default": "obj",
+          "datatype": "string",
+          "readable": false,
+          "writable": true,
+          "configuration": false,
+          "private": true
+        },
+        "hot": {
+          "type": "property",
+          "label": "hot",
+          "description": "dog",
+          "code": "z: NGN.define(true, false, false, 'another test')",
+          "start": {
+            "line": 72,
+            "column": 6
+          },
+          "end": {
+            "line": 72,
+            "column": 55
+          },
+          "flags": [],
+          "default": null,
+          "datatype": "boolean",
+          "readable": true,
+          "writable": false,
+          "configuration": false,
+          "private": true
+        },
         "mofo": {
           "type": "property",
           "label": "mofo",
           "description": null,
           "code": "get mofo () {\n    return false\n  }",
           "start": {
-            "line": 40,
+            "line": 78,
             "column": 2
           },
           "end": {
-            "line": 42,
+            "line": 80,
             "column": 3
           },
+          "flags": [],
           "datatype": "boolean",
           "readable": true,
           "writable": false,
-          "configuration": false
+          "configuration": false,
+          "private": false
         }
       },
       "methods": {
         "constructor": {
           "type": "method",
           "label": "constructor",
-          "description": null,
-          "code": "constructor (cfg) {\n    super()\n\n    this.blahblah = true\n\n    return 1\n  }",
+          "description": "Create a new representation",
+          "code": "constructor (cfg) {\n    super()\n\n    this.blahblah = true\n\n    Object.defineProperties(this, {\n      /**\n       * @cfgproperty\n       * X is a config value\n       */\n      x: NGN.public(true),\n      /**\n       * @property {boolean} nanananan\n       * Batman!\n       */\n      y: NGN.define(true, false, false, 'test'),\n\n      o: {\n        enumerable: false,\n        writable: true,\n        configurable: false,\n        value: 'obj'\n      }\n    })\n\n    /**\n     * @property {number} doesnotexist\n     * This is a test\n     */\n\n    Object.defineProperty(this, {\n      /**\n       * @property {boolean} hot\n       * dog\n       */\n      z: NGN.define(true, false, false, 'another test')\n    })\n\n    return 1\n  }",
           "tags": {},
           "exceptions": {},
           "start": {
-            "line": 32,
+            "line": 37,
             "column": 2
           },
           "end": {
-            "line": 38,
+            "line": 76,
             "column": 3
           },
+          "flags": [],
+          "todo": [
+            "This buds for you",
+            "This turd's for you",
+            "This buds for you too",
+            "This turd's for you two"
+          ],
           "parameters": {
             "cfg": {
               "type": "parameter",
               "label": "cfg",
-              "description": null,
-              "code": "cfg",
+              "description": "The config contains stuff.",
+              "code": null,
               "start": {
-                "line": 32,
-                "column": 15
+                "line": 0,
+                "column": 0
               },
               "end": {
-                "line": 32,
-                "column": 18
+                "line": 0,
+                "column": 0
               },
-              "datatype": "any",
-              "required": false
+              "flags": [],
+              "default": "{}",
+              "datatype": "object",
+              "required": false,
+              "enum": null
+            },
+            "bb": {
+              "type": "parameter",
+              "label": "bb",
+              "description": "das boolean",
+              "code": null,
+              "start": {
+                "line": 0,
+                "column": 0
+              },
+              "end": {
+                "line": 0,
+                "column": 0
+              },
+              "flags": [],
+              "default": "true",
+              "datatype": "boolean",
+              "required": false,
+              "enum": [
+                "test",
+                "blah"
+              ]
             }
           },
           "returnType": "number",
@@ -90,13 +452,14 @@
           "tags": {},
           "exceptions": {},
           "start": {
-            "line": 44,
+            "line": 82,
             "column": 2
           },
           "end": {
-            "line": 57,
+            "line": 95,
             "column": 3
           },
+          "flags": [],
           "parameters": {},
           "returnType": "void",
           "returnDescription": "void",
@@ -110,44 +473,43 @@
     }
   },
   "exceptions": {
-    "InvalidConfigurationError": {
+    "BadConfig": {
       "type": "InvalidConfigurationError",
-      "label": "InvalidConfigurationError",
-      "description": null,
+      "label": "BadConfig",
+      "description": "This is a baaaaad config.",
       "code": "NGN.createException({\n  name: 'InvalidConfigurationError',\n  type: 'InvalidConfigurationError',\n  severity: 'critical',\n  message: 'Invalid configuration.',\n  category: 'programmer',\n  custom: {\n    help: 'See the documentation for the proper configuration.',\n    cause: 'The configuration specified was marked as invalid or caused an error during instantiation.'\n  }\n})",
       "tags": {
         "help": {
           "value": "help",
           "description": "See the documentation for the proper configuration.",
           "type": "help",
-          "line": 71,
+          "line": 109,
           "raw": "help: 'See the documentation for the proper configuration.'"
         },
         "cause": {
           "value": "cause",
           "description": "The configuration specified was marked as invalid or caused an error during instantiation.",
           "type": "cause",
-          "line": 72,
+          "line": 110,
           "raw": "cause: 'The configuration specified was marked as invalid or caused an error during instantiation.'"
         }
       },
       "start": {
-        "line": 64,
+        "line": 102,
         "column": 0
       },
       "end": {
-        "line": 74,
+        "line": 112,
         "column": 2
       },
-      "name": "InvalidConfigurationError",
+      "flags": [],
+      "name": "BadConfig",
       "severity": "critical",
       "message": "Invalid configuration.",
       "category": "programmer"
     }
   },
-  "requires": [
-    "fs"
-  ],
+  "requires": [],
   "bus": {
     "yo": {
       "type": "event",
@@ -155,13 +517,14 @@
       "description": null,
       "code": "NGN.BUS.emit('yo')",
       "start": {
-        "line": 48,
+        "line": 86,
         "column": 0
       },
       "end": {
-        "line": 48,
+        "line": 86,
         "column": 18
       },
+      "flags": [],
       "parameters": {},
       "deprecated": false,
       "deprecationReplacement": null
