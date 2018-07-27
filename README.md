@@ -60,6 +60,10 @@ Aliases: `triggers`, `trigger`, `event`
 
 Indicates a section should be ignored from the documentation (i.e. prevents generation of a segment of code documentation).
 
+### info
+
+Maintains a series of tags with additional information.
+
 ### method
 
 Identifies a method.
@@ -142,7 +146,24 @@ For example:
  */
 ```
 
-The example above describes a string parameter named `myPerameter`. Acceptable values are `example`, `a`, and `b`. The default value is `example`. The description is `This is an example parameter.`.
+The example above describes a string parameter named `myParameter`. Acceptable values are `example`, `a`, and `b`. The default value is `example`. The description is `This is an example parameter.`.
+
+### Documenting Callback Parameters
+
+Callback functions are a unique type of parameter. These parameters may have their own arguments/parameters. This generator supports them using a dot notation syntax:
+
+```js
+/**
+  * @param {function} callback
+  * This is an example callback.
+  * @param {boolean} callback.a
+  * The first element is a.
+  * @param {string} callback.b (possible,values)
+  * The next element is b.
+ */
+```
+
+The comment above indicates a parameter is a callback method that receives two arguments: `a` and `b`. The first argument (`a`) is a `boolean` value. The second (`b`) is a `string` whose value will be either `possible` or `values`.
 
 ## Documenting Events
 
