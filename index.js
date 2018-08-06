@@ -97,7 +97,15 @@ class Generator extends ProductionLine {
       }
     })
 
-    this.on('register.class', snippet => this.DATA.classes.set(snippet.label, snippet))
+    this.on('register.class', snippet => {
+      snippet.methods.forEach(method => {
+        if (method.events.size > 0) {
+          method.events.forEach(event => snippet.events.set(event.label, event))
+        }
+      })
+
+      this.DATA.classes.set(snippet.label, snippet)
+    })
     this.on('warning', msg => DISPLAY_WARNING(msg))
 
     BUS.on('warning', msg => DISPLAY_WARNING(msg))
@@ -408,7 +416,7 @@ class Generator extends ProductionLine {
                 })
               }
             } else {
-              this.emit('warning', `Failed to process comment at ${sourcefile.relativePath}:${comment.start.line}${comment.start.line !== comment.end.line ? '-' + comment.end.line : ''}`)
+              this.emit('warning', `Failed to process comment: \n${comment.raw}\nat ${sourcefile.relativePath}:${comment.start.line}${comment.start.line !== comment.end.line ? '-' + comment.end.line : ''}\n\n`)
             }
           }
         }
@@ -428,7 +436,7 @@ class Generator extends ProductionLine {
   createJson () {
     this.addTask('Generate JSON', next => {
       this.walk(this.source).forEach((file, i) => {
-        if (i < 20) {
+        if (i < 27) {
           console.log('YO', file)
           try {
             this.parseFile(file)

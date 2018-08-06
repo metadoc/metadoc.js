@@ -24,6 +24,10 @@ Tags can be used to modify documentation snippets. Tags use the following format
 
 The following tags are available:
 
+### author
+
+Identifies a specific person/organization recognized as the author of a snippet of code.
+
 ### cfg
 
 Identifies a write-only configuration property.
