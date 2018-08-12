@@ -449,6 +449,71 @@ class Generator extends ProductionLine {
       next()
     })
   }
+
+  inherit (className, element) {
+    let Class = this.DATA.classes.get(className)
+    let items = new Map()
+
+    if (!Class || !Class.extends) {
+      return items
+    }
+
+    items = this.inherit(Class.extends, element)
+    element === 'events' && console.log('HERE', Class.extends, items.size, Class[element].size)
+
+    Class[element].forEach(item => {
+      if (!item.hasOwnProperty('kind') || item.kind !== 'constructor') {
+        if (items.get(item.label)) {
+          let override = Class[element].get(item.label)
+
+          if (override) {
+            override.override = true
+          }
+
+          (override || item).super = `${Class.extends}#${item.label}`
+
+          items.set(item.label, (override || item))
+        } else {
+          item.super = `${Class.label}#${item.label}`
+          items.set(item.label, item)
+        }
+      }
+    })
+
+    return items
+  }
+
+  structureJson () {
+    this.addTask('Expand Classes', next => {
+      this.DATA.classes.forEach(Class => {
+        if (Class.extends) {
+          // Inherit/override methods
+          this.inherit(Class.extends, 'methods').forEach(method => {
+            Class.methods.set(method.label, method)
+          })
+
+          // Inherit/override properties
+          this.inherit(Class.extends, 'properties').forEach(property => {
+            Class.properties.set(property.label, property)
+          })
+
+          // Inherit events
+// TODO: Not inheriting newEventListener event.
+          this.inherit(Class.extends, 'events').forEach(event => {
+console.log('-->', event.label)
+            Class.events.set(event.label, event)
+          })
+
+          // Inherit configuration
+          this.inherit(Class.extends, 'configuration').forEach(cfg => {
+            Class.configuration.set(cfg.label, cfg)
+          })
+        }
+      })
+
+      next()
+    })
+  }
 }
 
 const Builder = new Generator({
@@ -478,6 +543,7 @@ const Builder = new Generator({
       Builder.source = process.argv[process.argv.indexOf('--source') + 1]
       Builder.output = path.join(process.cwd(), './docs')
       Builder.createJson()
+      Builder.structureJson()
       Builder.on('complete', () => {
         require('fs').writeFileSync(path.resolve('./test.json'), JSON.stringify(Builder.data, null, 2))
 

@@ -60,6 +60,10 @@ Identifies an event. See "Documenting Events" below for additional detail.
 
 Aliases: `triggers`, `trigger`, `event`
 
+### hidden
+
+Indicates the section should be included in the documentation but hidden from view. This differs from the @ignore tag, which prevents the documentation from being generated at all.
+
 ### ignore
 
 Indicates a section should be ignored from the documentation (i.e. prevents generation of a segment of code documentation).

@@ -20,5 +20,6 @@
   "interface": "flag",
   "static": "flag",
   "since": "flag",
-  "prop": "property"
+  "prop": "property",
+  "hide": "hidden"
 }
