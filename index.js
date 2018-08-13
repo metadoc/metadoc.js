@@ -106,6 +106,7 @@ class Generator extends ProductionLine {
 
       this.DATA.classes.set(snippet.label, snippet)
     })
+
     this.on('warning', msg => DISPLAY_WARNING(msg))
 
     BUS.on('warning', msg => DISPLAY_WARNING(msg))
@@ -416,7 +417,7 @@ class Generator extends ProductionLine {
                 })
               }
             } else {
-              this.emit('warning', `Failed to process comment: \n${comment.raw}\nat ${sourcefile.relativePath}:${comment.start.line}${comment.start.line !== comment.end.line ? '-' + comment.end.line : ''}\n\n`)
+              this.emit('warning', `Failed to process comment at ${sourcefile.relativePath}:${comment.start.line}${comment.start.line !== comment.end.line ? '-' + comment.end.line : ''}:\n(Could not find relevant snippet)\n${comment.raw}\n\n`)
             }
           }
         }
@@ -459,7 +460,6 @@ class Generator extends ProductionLine {
     }
 
     items = this.inherit(Class.extends, element)
-    element === 'events' && console.log('HERE', Class.extends, items.size, Class[element].size)
 
     Class[element].forEach(item => {
       if (!item.hasOwnProperty('kind') || item.kind !== 'constructor') {
@@ -498,9 +498,7 @@ class Generator extends ProductionLine {
           })
 
           // Inherit events
-// TODO: Not inheriting newEventListener event.
           this.inherit(Class.extends, 'events').forEach(event => {
-console.log('-->', event.label)
             Class.events.set(event.label, event)
           })
 
@@ -518,6 +516,9 @@ console.log('-->', event.label)
 
 const Builder = new Generator({
   commands: {
+    'default': () => {
+      console.log('yo')
+    },
     '--generate': () => {
       if (process.argv.indexOf('--warnnocode') >= 0) {
         DOC.config.warnOnNoCode = true
