@@ -24,91 +24,91 @@ Tags can be used to modify documentation snippets. Tags use the following format
 
 The following tags are available:
 
-### author
+### @author
 
 Identifies a specific person/organization recognized as the author of a snippet of code.
 
-### cfg
+### @cfg
 
 Identifies a write-only configuration property.
 
 Aliases: `config`, `configuration`
 
-### cfgproperty
+### @cfgproperty
 
 Identifies a configuration property (write-only) that also has a corresponding readable/writable property.
 
-### class
+### @class
 
 Identifies a class.
 
-### constructor
+### @constructor
 
 Marks a method as the constructor of a class.
 
-### exception
+### @exception
 
 Identifies a custom NGN Exception.
 
-### extends
+### @extends
 
 Identifies which class is being extended.
 
-### fires
+### @fires
 
 Identifies an event. See "Documenting Events" below for additional detail.
 
 Aliases: `triggers`, `trigger`, `event`
 
-### hidden
+### @hidden
 
 Indicates the section should be included in the documentation but hidden from view. This differs from the @ignore tag, which prevents the documentation from being generated at all.
 
-### ignore
+### @ignore
 
 Indicates a section should be ignored from the documentation (i.e. prevents generation of a segment of code documentation).
 
-### info
+### @info
 
 Maintains a series of tags with additional information.
 
-### method
+### @method
 
 Identifies a method.
 
-### param
+### @param
 
 Identifies an argument/paramenter. See "Documenting Parameters" for details.
 
 Aliases: `arg`, `argument`, `parameter`
 
-### private
+### @private
 
 Indicates the snippet is private/not explicitly accessible as a developer interface (internal).
 
-### property
+### @property
 
 Identifies a property of a class.
 
 Aliases: `prop`
 
-### readonly
+### @readonly
 
 Indicates a snippet is read-only. This applies to properties.
 
-### return
+### @return
 
 Identifies the data returned by a method.
 
 Aliases: `returns`
 
-### todo
+### @todo
 
 This is a special tag that annotates the documentation with a known task that requires completion (a developer to-do task).
 
 Format: `@todo Describe the task here`
 
-### writeonly
+### @writeonly
 
 Indicates a property is only writable.
 
@@ -118,15 +118,15 @@ Indicates a property is only writable.
 
 In addition to tags, there are a number of recognized flags that can be used to annotate a documentation snippet.
 
-- `protected` Identifies a protected method/attribute.
-- * `deprecated` Indicates the feature will no longer be available in a future version.
-- * `experimental` Indicates the feature is not considered "production ready".
-- `warning` Provides a warning message.
-- `hidden` Indicates the feature should be hidden but not removed from the documentation.
-- `singleton` Indicates a class is a singleton.
-- `interface` Indicates a class is an interface.
-- `static` Indicates a method is static.
-- `since`* Identifies the version and/or date when the feature is generally available. This is typically used to identify new features that have been added to the original platform.
+- `@protected` Identifies a protected method/attribute.
+- * `@deprecated` Indicates the feature will no longer be available in a future version.
+- * `@experimental` Indicates the feature is not considered "production ready".
+- `@warning` Provides a warning message.
+- `@hidden` Indicates the feature should be hidden but not removed from the documentation.
+- `@singleton` Indicates a class is a singleton.
+- `@interface` Indicates a class is an interface.
+- `@static` Indicates a method is static.
+- `@since`* Identifies the version and/or date when the feature is generally available. This is typically used to identify new features that have been added to the original platform.
 
 ---
 
