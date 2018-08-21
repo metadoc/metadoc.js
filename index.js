@@ -118,7 +118,7 @@ class Generator extends ProductionLine {
     // Recognize global events on the NGN.BUS
     BUS.on('register.event', evt => this.DATA.bus.set(evt.label, evt))
 
-    BUS.on('register.namespace', namespace => this.DATA.namespaces.set(namespace.label, namespace))
+    // BUS.on('register.namespace', namespace => this.addNamespace(namespace, this.DATA, namespace.NODE, namespace.SOURCE))
 
     // Handle event deprecation
     BUS.on('deprecate.event', (originalEvent, replacementEvent = null) => {
@@ -252,6 +252,40 @@ class Generator extends ProductionLine {
     }
 
     this.LocalFile = LocalFile
+  }
+
+  addNamespace (namespace, parent = null, node = null, source = null) {
+    let ns
+console.log(namespace);
+    if (namespace instanceof DOC.Namespace) {
+      if (namespace.label.indexOf('.') > 0) {
+        let names = namespace.label.split('.')
+
+        namespace.label = names.pop()
+
+        ns = this.addNamespace(names.join())
+        ns.namespaces.set(namespace.label, namespace)
+      } else {
+        ns = namespace
+      }
+    } else {
+      let scope = namespace.split('.')
+
+      if (scope.length === 1) {
+        ns = new DOC.Namespace(node, source)
+        ns.label = scope[0]
+      } else {
+        while (scope.length > 0) {
+          ns = this.addNamespace(scope.shift(), ns)
+        }
+      }
+    }
+
+    if (parent !== null) {
+      parent.namespaces.set(ns.label, ns)
+    }
+
+    return ns
   }
 
   get data () {
@@ -438,7 +472,7 @@ class Generator extends ProductionLine {
     this.addTask('Generate JSON', next => {
       this.walk(this.source).forEach((file, i) => {
         if (i < 27) {
-          console.log('YO', file)
+          this.subtle('     - Processing', file)
           try {
             this.parseFile(file)
           } catch (e) {
@@ -454,11 +488,12 @@ class Generator extends ProductionLine {
   inherit (className, element) {
     let Class = this.DATA.classes.get(className)
     let items = new Map()
-
+console.log(Class.label, className);
     if (!Class || !Class.extends) {
       return items
     }
 
+    console.log('Inherit', element, 'from', className)
     items = this.inherit(Class.extends, element)
 
     Class[element].forEach(item => {
@@ -485,31 +520,34 @@ class Generator extends ProductionLine {
 
   structureJson () {
     this.addTask('Expand Classes', next => {
-      this.DATA.classes.forEach(Class => {
-        if (Class.extends) {
-          // Inherit/override methods
-          this.inherit(Class.extends, 'methods').forEach(method => {
-            Class.methods.set(method.label, method)
-          })
+      setTimeout(() => {
+        this.DATA.classes.forEach(Class => {
+          if (Class.extends !== null) {
+console.log(Class.label, 'inheriting from', Class.extends);
+            // Inherit/override methods
+            this.inherit(Class.extends, 'methods').forEach(method => {
+              Class.methods.set(method.label, method)
+            })
 
-          // Inherit/override properties
-          this.inherit(Class.extends, 'properties').forEach(property => {
-            Class.properties.set(property.label, property)
-          })
+            // Inherit/override properties
+            this.inherit(Class.extends, 'properties').forEach(property => {
+              Class.properties.set(property.label, property)
+            })
 
-          // Inherit events
-          this.inherit(Class.extends, 'events').forEach(event => {
-            Class.events.set(event.label, event)
-          })
+            // Inherit events
+            this.inherit(Class.extends, 'events').forEach(event => {
+              Class.events.set(event.label, event)
+            })
 
-          // Inherit configuration
-          this.inherit(Class.extends, 'configuration').forEach(cfg => {
-            Class.configuration.set(cfg.label, cfg)
-          })
-        }
-      })
+            // Inherit configuration
+            this.inherit(Class.extends, 'configuration').forEach(cfg => {
+              Class.configuration.set(cfg.label, cfg)
+            })
+          }
+        })
 
-      next()
+        next()
+      }, 0)
     })
   }
 }
@@ -542,11 +580,19 @@ const Builder = new Generator({
       })
 
       Builder.source = process.argv[process.argv.indexOf('--source') + 1]
-      Builder.output = path.join(process.cwd(), './docs')
+
+      if (process.argv.indexOf('--output')) {
+        Builder.output = process.argv[process.argv.indexOf('--output') + 1]
+      } else {
+        Builder.output = path.join(process.cwd(), './docs')
+      }
+
+      Builder.clean()
       Builder.createJson()
       Builder.structureJson()
       Builder.on('complete', () => {
-        require('fs').writeFileSync(path.resolve('./test.json'), JSON.stringify(Builder.data, null, 2))
+        require('fs').writeFileSync(path.join(Builder.output, 'api.json'), JSON.stringify(Builder.data, null, 2))
+        // require('fs').writeFileSync(path.resolve('./test.json'), JSON.stringify(Builder.data, null, 2))
 
         DOC.audit.forEach(log => Builder.failure(log))
       })

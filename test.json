@@ -22930,7 +22930,7 @@
   },
   "namespaces": {
     "NGN": {
-      "type": "class",
+      "type": "namespace",
       "label": "NGN",
       "description": "Returns the primitive object/function of the specified type.\r\n  For example:\r\n  \n  ```js\r\n  let type = NGN.getType('number') // Returns Number\r\n  let type = NGN.getType('string') // Returns String\r\n  ```",
       "code": null,
@@ -24112,31 +24112,8 @@
           "override": false,
           "private": false
         }
-      }
-    },
-    "NGN.NET": {
-      "type": "class",
-      "label": "NGN.NET",
-      "description": "A library to issue HTTP/S requests.\r\nThis acts as an AJAX library.",
-      "code": null,
-      "tags": {},
-      "exceptions": {},
-      "events": {},
-      "start": {
-        "line": 0,
-        "column": 0
       },
-      "end": {
-        "line": 0,
-        "column": 0
-      },
-      "flags": [],
-      "authors": [],
-      "sourcefile": "./\\net\\core.js",
-      "extends": null,
-      "configuration": {},
-      "properties": {},
-      "methods": {}
+      "namespaces": {}
     }
   }
 }

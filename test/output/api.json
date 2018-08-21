@@ -1,0 +1,412 @@
+{
+  "classes": {
+    "Event": {
+      "type": "class",
+      "label": "Event",
+      "description": "Represents a generic event.",
+      "code": "/**\r\n * Represents a generic event.\r\n */\r\nclass Event {\r\n  constructor () {\r\n    this.date = new Date()\r\n    this.attendees = new Set()\r\n  }\r\n\r\n  /**\r\n   * @property {number} attendeeCount\r\n   * The number of attendees present.\r\n   */\r\n  get attendeeCount () {\r\n    return this.attendees.length\r\n  }\r\n\r\n  /**\r\n   * @param {Number} digit\r\n   * This is a test\r\n   */\r\n  addAttendee (name) {\r\n    this.attendees.add(name)\r\n  }\r\n\r\n  removeAttendee (name) {\r\n    this.attendees.delete(name)\r\n  }\r\n}",
+      "tags": {},
+      "exceptions": {},
+      "events": {},
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 29,
+        "column": 1
+      },
+      "flags": [],
+      "authors": [],
+      "sourcefile": "./\\event.js",
+      "extends": null,
+      "configuration": {},
+      "properties": {
+        "date": {
+          "type": "property",
+          "label": "date",
+          "description": null,
+          "code": "this.date = new Date()",
+          "start": {
+            "line": 6,
+            "column": 9
+          },
+          "end": {
+            "line": 6,
+            "column": 13
+          },
+          "flags": [],
+          "authors": [],
+          "datatype": "any",
+          "readable": true,
+          "writable": true,
+          "configuration": false,
+          "private": false
+        },
+        "attendees": {
+          "type": "property",
+          "label": "attendees",
+          "description": null,
+          "code": "this.attendees = new Set()",
+          "start": {
+            "line": 7,
+            "column": 9
+          },
+          "end": {
+            "line": 7,
+            "column": 18
+          },
+          "flags": [],
+          "authors": [],
+          "datatype": "any",
+          "readable": true,
+          "writable": true,
+          "configuration": false,
+          "private": false
+        },
+        "attendeeCount": {
+          "type": "property",
+          "label": "attendeeCount",
+          "description": "The number of attendees present.",
+          "code": null,
+          "start": {
+            "line": 0,
+            "column": 0
+          },
+          "end": {
+            "line": 0,
+            "column": 0
+          },
+          "flags": [],
+          "authors": [],
+          "default": null,
+          "datatype": "number",
+          "readable": false,
+          "writable": false,
+          "configuration": false,
+          "private": false
+        }
+      },
+      "methods": {
+        "constructor": {
+          "type": "method",
+          "label": "constructor",
+          "description": null,
+          "code": "constructor () {\r\n    this.date = new Date()\r\n    this.attendees = new Set()\r\n  }",
+          "tags": {},
+          "exceptions": {},
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 3
+          },
+          "flags": [],
+          "authors": [],
+          "arguments": {},
+          "returnType": "void",
+          "returnDescription": "void",
+          "kind": "constructor",
+          "generator": false,
+          "static": false,
+          "computed": false,
+          "async": false,
+          "super": null,
+          "override": false,
+          "private": false
+        },
+        "addAttendee": {
+          "type": "method",
+          "label": "addAttendee",
+          "description": "This is a test",
+          "code": "addAttendee (name) {\r\n    this.attendees.add(name)\r\n  }",
+          "tags": {},
+          "exceptions": {},
+          "start": {
+            "line": 22,
+            "column": 2
+          },
+          "end": {
+            "line": 24,
+            "column": 3
+          },
+          "flags": [],
+          "authors": [],
+          "arguments": {
+            "name": {
+              "type": "argument",
+              "label": "digit",
+              "description": "This is a test",
+              "code": "name",
+              "start": {
+                "line": 22,
+                "column": 15
+              },
+              "end": {
+                "line": 22,
+                "column": 19
+              },
+              "flags": [],
+              "authors": [],
+              "default": null,
+              "datatype": "number",
+              "required": true,
+              "enum": null
+            },
+            "digit": {
+              "type": "argument",
+              "label": "digit",
+              "description": "This is a test",
+              "code": "name",
+              "start": {
+                "line": 22,
+                "column": 15
+              },
+              "end": {
+                "line": 22,
+                "column": 19
+              },
+              "flags": [],
+              "authors": [],
+              "default": null,
+              "datatype": "number",
+              "required": true,
+              "enum": null
+            }
+          },
+          "returnType": "void",
+          "returnDescription": "void",
+          "kind": "method",
+          "generator": false,
+          "static": false,
+          "computed": false,
+          "async": false,
+          "super": null,
+          "override": false,
+          "private": false
+        },
+        "removeAttendee": {
+          "type": "method",
+          "label": "removeAttendee",
+          "description": null,
+          "code": "removeAttendee (name) {\r\n    this.attendees.delete(name)\r\n  }",
+          "tags": {},
+          "exceptions": {},
+          "start": {
+            "line": 26,
+            "column": 2
+          },
+          "end": {
+            "line": 28,
+            "column": 3
+          },
+          "flags": [],
+          "authors": [],
+          "arguments": {
+            "name": {
+              "type": "argument",
+              "label": "name",
+              "description": null,
+              "code": "name",
+              "start": {
+                "line": 26,
+                "column": 18
+              },
+              "end": {
+                "line": 26,
+                "column": 22
+              },
+              "flags": [],
+              "authors": [],
+              "datatype": "any",
+              "required": true,
+              "enum": null
+            }
+          },
+          "returnType": "void",
+          "returnDescription": "void",
+          "kind": "method",
+          "generator": false,
+          "static": false,
+          "computed": false,
+          "async": false,
+          "super": null,
+          "override": false,
+          "private": false
+        }
+      }
+    },
+    "Meetup": {
+      "type": "class",
+      "label": "Meetup",
+      "description": "Contains detail about a meetup.",
+      "code": "/**\r\n * @class Meetup\r\n * Contains detail about a meetup.\r\n */\r\nclass Meetup extends Event {\r\n  constructor () {\r\n    this.description = 'A meetup.com event.'\r\n    this.url = null\r\n  }\r\n\r\n  set url (value) {\r\n    if (value.startsWith('http')) {\r\n      this.url = value\r\n    } else {\r\n      throw new Error('Invalid URL')\r\n    }\r\n  }\r\n\r\n  /**\r\n   * Open the\r\n   * @param {string} URI\r\n   * The URL of the meetup.\r\n   */\r\n  display (uri = null) {\r\n    document.location = uri || this.url\r\n  }\r\n}",
+      "tags": {},
+      "exceptions": {},
+      "events": {},
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 27,
+        "column": 1
+      },
+      "flags": [],
+      "authors": [],
+      "sourcefile": "./\\meetup.js",
+      "extends": "Event",
+      "configuration": {},
+      "properties": {
+        "description": {
+          "type": "property",
+          "label": "description",
+          "description": null,
+          "code": "this.description = 'A meetup.com event.'",
+          "start": {
+            "line": 7,
+            "column": 9
+          },
+          "end": {
+            "line": 7,
+            "column": 20
+          },
+          "flags": [],
+          "authors": [],
+          "datatype": "any",
+          "readable": true,
+          "writable": true,
+          "configuration": false,
+          "private": false
+        },
+        "url": {
+          "type": "property",
+          "label": "url",
+          "description": null,
+          "code": "set url (value) {\r\n    if (value.startsWith('http')) {\r\n      this.url = value\r\n    } else {\r\n      throw new Error('Invalid URL')\r\n    }\r\n  }",
+          "start": {
+            "line": 11,
+            "column": 2
+          },
+          "end": {
+            "line": 17,
+            "column": 3
+          },
+          "flags": [],
+          "authors": [],
+          "datatype": "any",
+          "readable": false,
+          "writable": true,
+          "configuration": false,
+          "private": false
+        }
+      },
+      "methods": {
+        "constructor": {
+          "type": "method",
+          "label": "constructor",
+          "description": null,
+          "code": "constructor () {\r\n    this.description = 'A meetup.com event.'\r\n    this.url = null\r\n  }",
+          "tags": {},
+          "exceptions": {},
+          "start": {
+            "line": 6,
+            "column": 2
+          },
+          "end": {
+            "line": 9,
+            "column": 3
+          },
+          "flags": [],
+          "authors": [],
+          "arguments": {},
+          "returnType": "void",
+          "returnDescription": "void",
+          "kind": "constructor",
+          "generator": false,
+          "static": false,
+          "computed": false,
+          "async": false,
+          "super": null,
+          "override": false,
+          "private": false
+        },
+        "display": {
+          "type": "method",
+          "label": "display",
+          "description": "Open the\r\n  \r\n  The URL of the meetup.",
+          "code": "display (uri = null) {\r\n    document.location = uri || this.url\r\n  }",
+          "tags": {},
+          "exceptions": {},
+          "start": {
+            "line": 24,
+            "column": 2
+          },
+          "end": {
+            "line": 26,
+            "column": 3
+          },
+          "flags": [],
+          "authors": [],
+          "arguments": {
+            "uri": {
+              "type": "argument",
+              "label": "URI",
+              "description": "The URL of the meetup.",
+              "code": "uri = null",
+              "start": {
+                "line": 24,
+                "column": 11
+              },
+              "end": {
+                "line": 24,
+                "column": 21
+              },
+              "flags": [],
+              "authors": [],
+              "default": null,
+              "datatype": "string",
+              "required": true,
+              "enum": null
+            },
+            "URI": {
+              "type": "argument",
+              "label": "URI",
+              "description": "The URL of the meetup.",
+              "code": "uri = null",
+              "start": {
+                "line": 24,
+                "column": 11
+              },
+              "end": {
+                "line": 24,
+                "column": 21
+              },
+              "flags": [],
+              "authors": [],
+              "default": null,
+              "datatype": "string",
+              "required": true,
+              "enum": null
+            }
+          },
+          "returnType": "void",
+          "returnDescription": "void",
+          "kind": "method",
+          "generator": false,
+          "static": false,
+          "computed": false,
+          "async": false,
+          "super": null,
+          "override": false,
+          "private": false
+        }
+      }
+    }
+  },
+  "exceptions": {},
+  "bus": {},
+  "namespaces": {}
+}

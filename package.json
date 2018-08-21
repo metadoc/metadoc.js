@@ -4,8 +4,13 @@
   "description": "Documentation metadata generator.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tap -R spec test/*.js",
+    "test:debug": "tap -R spec test/*.js",
+    "test:formatted": "tap -R spec test/*.js && standard --verbose | snazzy",
     "generate": "node index.js --generate"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   },
   "keywords": [
     "oop",
@@ -20,7 +25,44 @@
     "espree-extract-comments": "^0.1.0",
     "extract-comments": "^1.0.0",
     "mdn-links": "^0.1.0",
-    "productionline": "^1.3.6",
+    "productionline": "^1.3.7",
     "traverse": "^0.6.6"
+  },
+  "devDependencies": {
+    "snazzy": "^7.1.1",
+    "standard": "^11.0.1",
+    "tap": "^12.0.1"
+  },
+  "standard": {
+    "ignore": [
+      "_*",
+      "_**/*",
+      "test/lib/**/*",
+      "node_modules",
+      "dist/**/*",
+      "gulpfile.js",
+      "src/common/data/WIP/**/*",
+      "src/common/data/current/**/*",
+      "rollup*.js",
+      "karma.conf.js",
+      "build.js"
+    ],
+    "globals": [
+      "window",
+      "global",
+      "MutationObserver",
+      "DOMParser",
+      "XMLHttpRequest",
+      "FormData",
+      "btoa",
+      "localStorage",
+      "fetch",
+      "Element",
+      "HTMLElement",
+      "NodeFilter",
+      "BUS",
+      "DOC",
+      "LAST_ENTITY"
+    ]
   }
 }
