@@ -29,33 +29,41 @@ test('Basic Class Structure', t => {
     'Identified basic methods.'
   )
 
+  t.ok(BaseClass.events.hasOwnProperty('created'), 'Identified event.')
+
   t.end()
 })
 
-test('Extended Class Structure', t => {
+test('Inheritance', t => {
   let BaseClass = data.classes.Meetup
 
-  t.ok(BaseClass.extends === 'Event', 'Identifies base class (super).')
-  t.ok(path.basename(BaseClass.sourcefile) === 'meetup.js', 'Identifies source file.')
+  t.ok(BaseClass.extends === 'Event', 'Identified base class.')
+  t.ok(path.basename(BaseClass.sourcefile) === 'meetup.js', 'Identified unique source file.')
   t.ok(
     BaseClass.methods.hasOwnProperty('addAttendee') &&
     BaseClass.methods.hasOwnProperty('removeAttendee'),
-    'Identified super (inherited) methods.'
+    'Inherited base class methods.'
   )
-  t.ok(BaseClass.methods.hasOwnProperty('display'), 'Identified standard methods.')
+  t.ok(BaseClass.methods.hasOwnProperty('display'), 'Identified standard methods (non-inherited).')
 
   t.ok(
     BaseClass.properties.hasOwnProperty('date') &&
     BaseClass.properties.hasOwnProperty('attendees') &&
     BaseClass.properties.hasOwnProperty('attendeeCount'),
-    'Identified super (inherited) properties.'
+    'Inherited base class properties.'
   )
 
   t.ok(
     BaseClass.properties.hasOwnProperty('description') &&
     BaseClass.properties.hasOwnProperty('url'),
-    'Identified standard properties.'
+    'Identified standard properties (non-inherited).'
   )
+
+  t.ok(BaseClass.configuration.hasOwnProperty('location'), 'Inherited base configuration elements.')
+  t.ok(BaseClass.configuration.hasOwnProperty('organizer'), 'Identified standard configuration elements (non-inherited).')
+
+  t.ok(BaseClass.events.hasOwnProperty('created'), 'Inherited base events.')
+  t.ok(BaseClass.events.hasOwnProperty('generated'), 'Identified standard events (non-inherited).')
 
   t.end()
 })

@@ -2,9 +2,18 @@
  * Represents a generic event.
  */
 class Event {
-  constructor () {
+  constructor (cfg = {}) {
     this.date = new Date()
     this.attendees = new Set()
+
+    /**
+     * @cfg {string} [location]
+     * The location of the event.
+     */
+    this.location = cfg.location || null
+
+    // This wouldn't actually work unless this class extended NGN.EventEmitter or some other event emitter.
+    this.emit('created')
   }
 
   /**

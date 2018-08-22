@@ -1,11 +1,21 @@
 /**
  * @class Meetup
  * Contains detail about a meetup.
+ * @fires generated
+ * This is a dummy event.
  */
 class Meetup extends Event {
-  constructor () {
+  constructor (cfg = {}) {
+    super(cfg)
+
     this.description = 'A meetup.com event.'
     this.url = null
+
+    /**
+     * @cfg {String|Array} [organizer]
+     * The organizer of a meetup.
+     */
+    this.organizer = cfg.organizer || []
   }
 
   set url (value) {

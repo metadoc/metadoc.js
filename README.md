@@ -1,9 +1,43 @@
-# Documentation
+# Metadoc
 
-This generator produces documentation _metadata_. Instead of producing HTML, it produces JSON that can be used as a data source for generating HTML documentation (or any other output format).
+Metadoc generates documentation _metadata_ for Object Oriented (Class) JavaScript libraries. Running the utility will produce a JSON file describing the code. This can be used as a data source for creating custom HTML documentation (or any other output format), or for further processing.
 
-... Fill me in with detail about running generator ...
+Metadoc is released as a command line utility. It is a custom extension of the [productionline](https://github.com/coreybutler/productionline) build utility (from the same authors of this utility).
 
+Metadoc was designed to support a "code and comment" workflow. It will parse JavaScript code and extract as much metadata as possible from the code's [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+
+AST parsing creates a significant amount of information, but isn't always sufficient for creating detailed information, such as class inheritance chains.
+
+To support greater detail, Metadoc reads inline comment blocks, written directly in the code. Comments can be used to supplement and/or override AST parsing. Comment parsing follows a style similar to JSDoc. Using a familiar `@tag` syntax, Metadoc provides powerful capabilities for creating fine detail in documentation.
+
+## Getting Started
+
+```js
+// Install metadoc
+npm install -g @author/metadoc
+
+// Run metadoc
+metadoc --generate --source "/path/to/source_directory" --output "/path/to/output_directory"
+```
+
+Metadoc also supports some common features:
+
+### Ignoring Files
+
+It is possible to ignore files and/or directories using standard [glob](https://www.npmjs.com/package/glob#glob-primer) syntax.
+
+For example:
+
+- `--ignore "./node_modules"` ignores the entire `node_modules` directory.
+- `--ignore /path/to/**/.*` ignores all files in any directory whose name starts with an dot (ex: `.testfile.js`).
+
+It is possible to use the `--ignore` flag multiple times.
+
+### Warnings
+
+Metadoc is capable of warning developers about some common code issues/concerns:
+
+- `--warnOnNoCode` triggers a warning whenever a code comment triggers an action for which no related code can be found. This is most useful for identifying comments that shouldn't actually be in the code base.
 
 # Documenting Code
 

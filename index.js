@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const path = require('path')
 const fs = require('fs')
 const ProductionLine = require('productionline')
@@ -439,6 +440,7 @@ console.log(namespace);
 
                     case 'property':
                       let prop = new DOC.Property(null, subsection.SOURCE)
+
                       prop.applyCommentTag(tag, comment)
                       subsection.properties.set(prop.label, prop)
                       comment.processed = true
@@ -488,8 +490,8 @@ console.log(namespace);
   inherit (className, element) {
     let Class = this.DATA.classes.get(className)
     let items = new Map()
-console.log(Class.label, className);
-    if (!Class || !Class.extends) {
+
+    if (!Class) {
       return items
     }
 
@@ -526,6 +528,7 @@ console.log(Class.label, className);
 console.log(Class.label, 'inheriting from', Class.extends);
             // Inherit/override methods
             this.inherit(Class.extends, 'methods').forEach(method => {
+console.log(method.label);
               Class.methods.set(method.label, method)
             })
 

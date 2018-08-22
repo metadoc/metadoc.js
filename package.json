@@ -1,8 +1,8 @@
 {
-  "name": "docs",
+  "name": "@author/metadoc",
   "version": "0.0.1",
-  "description": "Documentation metadata generator.",
-  "main": "index.js",
+  "description": "Generate JSON documentation of OOP-based JavaScript libraries.",
+  "bin": "index.js",
   "scripts": {
     "test": "tap -R spec test/*.js",
     "test:debug": "tap -R spec test/*.js",
