@@ -16,13 +16,11 @@ To support greater detail, Metadoc reads inline comment blocks, written directly
 
 **Input Files: Event.js & Meetup.js**
 
-![Event.js Source](https://github.com/ngnjs/documentation-metadata-generator/raw/master/images/event-class.png)
-
-![Meetup.js Source](https://github.com/ngnjs/documentation-metadata-generator/raw/master/images/class-extension.png)
+![Source Files](https://github.com/ngnjs/documentation-metadata-generator/raw/master/images/input.png)
 
 **Output: api.json**
 
-![Meetup.js Source](https://github.com/ngnjs/documentation-metadata-generator/raw/master/images/output.png)
+![Output File](https://github.com/ngnjs/documentation-metadata-generator/raw/master/images/output.png)
 
 ## Getting Started
 
