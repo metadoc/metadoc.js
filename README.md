@@ -4,11 +4,25 @@ Metadoc generates documentation _metadata_ for Object Oriented (Class) JavaScrip
 
 Metadoc is released as a command line utility. It is a custom extension of the [productionline](https://github.com/coreybutler/productionline) build utility (from the same authors of this utility).
 
+## Workflow
+
 Metadoc was designed to support a "code and comment" workflow. It will parse JavaScript code and extract as much metadata as possible from the code's [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
 AST parsing creates a significant amount of information, but isn't always sufficient for creating detailed information, such as class inheritance chains.
 
 To support greater detail, Metadoc reads inline comment blocks, written directly in the code. Comments can be used to supplement and/or override AST parsing. Comment parsing follows a style similar to JSDoc. Using a familiar `@tag` syntax, Metadoc provides powerful capabilities for creating fine detail in documentation.
+
+### Example
+
+**Input Files: Event.js & Meetup.js**
+
+![Event.js Source](https://github.com/ngnjs/documentation-metadata-generator/raw/master/images/event-class.png)
+
+![Meetup.js Source](https://github.com/ngnjs/documentation-metadata-generator/raw/master/images/class-extension.png)
+
+**Output: api.json**
+
+![Meetup.js Source](https://github.com/ngnjs/documentation-metadata-generator/raw/master/images/output.png)
 
 ## Getting Started
 
