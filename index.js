@@ -495,7 +495,6 @@ console.log(namespace);
       return items
     }
 
-    console.log('Inherit', element, 'from', className)
     items = this.inherit(Class.extends, element)
 
     Class[element].forEach(item => {
@@ -525,10 +524,8 @@ console.log(namespace);
       setTimeout(() => {
         this.DATA.classes.forEach(Class => {
           if (Class.extends !== null) {
-console.log(Class.label, 'inheriting from', Class.extends);
             // Inherit/override methods
             this.inherit(Class.extends, 'methods').forEach(method => {
-console.log(method.label);
               Class.methods.set(method.label, method)
             })
 

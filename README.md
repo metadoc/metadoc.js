@@ -1,8 +1,8 @@
-# Metadoc
+# NGN Metadoc
 
 Metadoc generates documentation _metadata_ for Object Oriented (Class) JavaScript libraries. Running the utility will produce a JSON file describing the code. This can be used as a data source for creating custom HTML documentation (or any other output format), or for further processing.
 
-Metadoc is released as a command line utility. It is a custom extension of the [productionline](https://github.com/coreybutler/productionline) build utility (from the same authors of this utility).
+Metadoc is released as a command line utility. It is a custom extension of the [productionline](https://github.com/coreybutler/productionline) build utility (from the same authors of this utility). It was originally designed to document the [NGN](https://github.com/ngnjs) and [Chassis](https://github.com/ngn-chassis) libraries.
 
 ## Workflow
 
@@ -32,11 +32,9 @@ npm install -g @ngnjs/metadoc
 metadoc --generate --source "/path/to/source_directory" --output "/path/to/output_directory"
 ```
 
-Metadoc also supports some common features:
-
 ### Ignoring Files
 
-It is possible to ignore files and/or directories using standard [glob](https://www.npmjs.com/package/glob#glob-primer) syntax.
+It is possible to ignore files and/or directories using [glob](https://www.npmjs.com/package/glob#glob-primer) syntax.
 
 For example:
 
@@ -57,13 +55,13 @@ Metadoc is capable of warning developers about some common code issues/concerns:
 
 - `--errorOnCommentFailure` throws an error when a comment cannot be processed. This is the default behavior, but this tag will allow this feature to be turned off (i.e. `--errorOnCommentFailure false`)
 
+---
+
 # Documenting Code
 
 The code will be automatically documented based on the JavaScript AST (Abstract Syntax Tree). However; this doesn't always reflect the true nature of how a library should be used. To accommodate customizations, the generator parses comments within the code, allowing developers to override the AST documentation with custom comment blocks.
 
----
-
-## Available Tags
+## Comment Tags
 
 Tags can be used to modify documentation snippets. Tags use the following format unless otherwise defined:
 
@@ -164,8 +162,6 @@ Format: `@todo Describe the task here`
 
 Indicates a property is only writable.
 
----
-
 ## Flags
 
 In addition to tags, there are a number of recognized flags that can be used to annotate a documentation snippet.
@@ -206,7 +202,7 @@ For example:
  */
 ```
 
-The example above describes a string parameter named `myParameter`. Acceptable values are `example`, `a`, and `b`. The default value is `example`. The description is `This is an example parameter.`.
+The example above describes a string parameter named `myParameter`. Acceptable (enumerable) values are `example`, `a`, and `b`. The default value is `example`. The description is `This is an example parameter.`.
 
 ### Documenting Callback Parameters
 
