@@ -1,5 +1,5 @@
 {
-  "name": "@author/metadoc",
+  "name": "@ngnjs/metadoc",
   "version": "0.0.1",
   "description": "Generate JSON documentation of OOP-based JavaScript libraries.",
   "bin": "index.js",
@@ -15,23 +15,22 @@
   "keywords": [
     "oop",
     "js",
-    "docs"
+    "docs",
+    "metadata",
+    "jsdoc"
   ],
   "author": "Corey Butler",
-  "license": "ISC",
+  "license": "BSD 3-Clause",
   "dependencies": {
-    "cherow": "^1.6.8",
-    "comment-parser": "^0.5.0",
-    "espree-extract-comments": "^0.1.0",
-    "extract-comments": "^1.0.0",
-    "mdn-links": "^0.1.0",
-    "productionline": "^1.3.7",
-    "traverse": "^0.6.6"
+    "cherow": "1.6.8",
+    "comment-parser": "0.5.0",
+    "productionline": "1.3.7",
+    "traverse": "0.6.6"
   },
   "devDependencies": {
-    "snazzy": "^7.1.1",
-    "standard": "^11.0.1",
-    "tap": "^12.0.1"
+    "snazzy": "7.1.1",
+    "standard": "11.0.1",
+    "tap": "12.0.1"
   },
   "standard": {
     "ignore": [

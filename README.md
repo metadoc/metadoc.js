@@ -26,7 +26,7 @@ To support greater detail, Metadoc reads inline comment blocks, written directly
 
 ```js
 // Install metadoc
-npm install -g @author/metadoc
+npm install -g @ngnjs/metadoc
 
 // Run metadoc
 metadoc --generate --source "/path/to/source_directory" --output "/path/to/output_directory"
@@ -50,6 +50,12 @@ It is possible to use the `--ignore` flag multiple times.
 Metadoc is capable of warning developers about some common code issues/concerns:
 
 - `--warnOnNoCode` triggers a warning whenever a code comment triggers an action for which no related code can be found. This is most useful for identifying comments that shouldn't actually be in the code base.
+
+- `--warnOnSkippedEvents` triggers a warning whenever an event is detected but not documented. This is most commonly used to identify events that are considered "internal" to a class.
+
+- `--warnOnSkippedTags` triggers a warning whenever a tag is skipped. This is the default behavior, but this tag will allow this feature to be turned off (i.e. `--warnOnSkippedTags false`)
+
+- `--errorOnCommentFailure` throws an error when a comment cannot be processed. This is the default behavior, but this tag will allow this feature to be turned off (i.e. `--errorOnCommentFailure false`)
 
 # Documenting Code
 
