@@ -4,10 +4,8 @@
   "description": "Generate JSON documentation of OOP-based JavaScript libraries.",
   "bin": "index.js",
   "scripts": {
-    "test": "tap -R spec test/*.js",
-    "test:debug": "tap -R spec test/*.js",
-    "test:formatted": "tap -R spec test/*.js && standard --verbose | snazzy",
-    "generate": "node index.js --generate"
+    "test": "tap -R spec test/*.js && standard --verbose | snazzy",
+    "test:debug": "tap -R spec test/*.js"
   },
   "engines": {
     "node": ">=10.0.0"

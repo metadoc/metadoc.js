@@ -119,7 +119,7 @@ class Generator extends ProductionLine {
     // Recognize global events on the NGN.BUS
     BUS.on('register.event', evt => this.DATA.bus.set(evt.label, evt))
 
-    // BUS.on('register.namespace', namespace => this.addNamespace(namespace, this.DATA, namespace.NODE, namespace.SOURCE))
+    BUS.on('register.namespace', namespace => this.addNamespace(namespace, this.DATA, namespace.NODE, namespace.SOURCE))
 
     // Handle event deprecation
     BUS.on('deprecate.event', (originalEvent, replacementEvent = null) => {
@@ -199,6 +199,9 @@ class Generator extends ProductionLine {
             inline: comment.comment.indexOf('\n') < 0 ? this.isCommentInline(lines[comment.range[0]], comment.range) : false,
             get prior () {
               return cIndex === 0 ? null : me.comments[cIndex - 1]
+            },
+            get sourcefile () {
+              return me.relativePath
             }
           })
 
@@ -256,37 +259,83 @@ class Generator extends ProductionLine {
   }
 
   addNamespace (namespace, parent = null, node = null, source = null) {
-    let ns
-console.log(namespace);
+    let ns = null
+
+    parent = parent || this.DATA
+
     if (namespace instanceof DOC.Namespace) {
-      if (namespace.label.indexOf('.') > 0) {
-        let names = namespace.label.split('.')
+      let existing = this.getNamespace(namespace.label)
 
-        namespace.label = names.pop()
+      if (existing) {
+        let parentName = namespace.label.split('.')
+        let name = parentName.pop()
+        let parentNS = this.getNamespace(parentName.join('.')) || parent
 
-        ns = this.addNamespace(names.join())
-        ns.namespaces.set(namespace.label, namespace)
+        namespace.label = name
+        parentNS.namespaces.set(namespace.label, namespace)
       } else {
-        ns = namespace
+        this.addNamespace(namespace.label, parent, node, source)
+        this.addNamespace(...arguments)
       }
     } else {
       let scope = namespace.split('.')
+      let currentScope = []
 
-      if (scope.length === 1) {
-        ns = new DOC.Namespace(node, source)
-        ns.label = scope[0]
+      while (scope.length > 0) {
+        let name = scope.shift()
+        currentScope.push(name)
+
+        let existing = this.getNamespace(currentScope.join())
+
+        if (!existing) {
+          let NS = new DOC.Namespace(node, source)
+          NS.label = name
+
+          parent.namespaces.set(name, NS)
+          parent = NS
+        }
+      }
+    }
+  }
+
+  getNamespace (nspath) {
+    let ns = this.DATA
+    let scope = nspath.split('.')
+
+    while (scope.length > 0) {
+      let name = scope.shift()
+
+      if (ns.namespaces.has(name)) {
+        ns = ns.namespaces.get(name)
       } else {
-        while (scope.length > 0) {
-          ns = this.addNamespace(scope.shift(), ns)
+        if (ns instanceof DOC.Namespace) {
+          return ns
+        } else {
+          return null
         }
       }
     }
 
-    if (parent !== null) {
-      parent.namespaces.set(ns.label, ns)
+    return ns instanceof DOC.Namespace ? ns : null
+  }
+
+  namespaceClass (Class) {
+    let scope = Class.label.split('.')
+
+    if (scope.length === 1) {
+      scope.unshift('global')
     }
 
-    return ns
+    scope.pop()
+
+    let ns = this.getNamespace(scope.join('.'))
+
+    if (!ns) {
+      this.addNamespace(scope.join('.'))
+      ns = this.getNamespace(scope.join('.'))
+    }
+
+    ns.addClass(Class.label)
   }
 
   get data () {
@@ -452,7 +501,7 @@ console.log(namespace);
                   }
                 })
               }
-            } else {
+            } else if (section.value.sourcefile === comment.sourcefile) {
               this.emit('warning', `Failed to process comment at ${sourcefile.relativePath}:${comment.start.line}${comment.start.line !== comment.end.line ? '-' + comment.end.line : ''}:\n(Could not find relevant snippet)\n${comment.raw}\n\n`)
             }
           }
@@ -548,6 +597,26 @@ console.log(namespace);
 
         next()
       }, 0)
+    })
+
+    this.addTask('Identify Namespaces', next => {
+      this.DATA.classes.forEach(Class => {
+        let ns = Class.label.split('.')
+        ns.pop()
+
+        if (ns.length > 0) {
+          this.addNamespace(ns.join('.'), this.DATA)
+        } else {
+          this.addNamespace('global', this.DATA)
+        }
+      })
+
+      next()
+    })
+
+    this.addTask('Associate Classes with Namespaces', next => {
+      this.DATA.classes.forEach(Class => this.namespaceClass(Class))
+      next()
     })
   }
 }
