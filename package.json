@@ -1,6 +1,6 @@
 {
   "name": "@ngnjs/metadoc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Generate JSON documentation of OOP-based JavaScript libraries.",
   "bin": "index.js",
   "scripts": {
