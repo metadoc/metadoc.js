@@ -38,8 +38,6 @@ global.DOC = Object.assign(DOC, {
 // Create a last known tag
 global.LAST_ENTITY = null
 
-const NgnClass = require('./lib/Class')
-
 class Generator extends ProductionLine {
   constructor (cfg = {}) {
     // Remove assets (since there aren't any)
@@ -259,8 +257,6 @@ class Generator extends ProductionLine {
   }
 
   addNamespace (namespace, parent = null, node = null, source = null) {
-    let ns = null
-
     parent = parent || this.DATA
 
     if (namespace instanceof DOC.Namespace) {
@@ -367,7 +363,7 @@ class Generator extends ProductionLine {
   }
 
   parseFile (file, processorFn) {
-    LAST_ENTITY = null
+    LAST_ENTITY = null // eslint-disable-line no-global-assign
 
     let sourcefile = new this.LocalFile(file, this.source)
     let ast = Parser.parse(sourcefile.content, this.STANDARD_OPTIONS)
@@ -434,7 +430,7 @@ class Generator extends ProductionLine {
                 ns.label = tag.value || tag.name
                 ns.description = tag.description || null
 
-                LAST_ENTITY = ns
+                LAST_ENTITY = ns // eslint-disable-line no-global-assign
 
                 if (!ns.ignore) {
                   BUS.emit('register.namespace', ns)
@@ -461,11 +457,10 @@ class Generator extends ProductionLine {
       sourcefile.comments.forEach(comment => {
         // console.log(comment)
         if (!comment.processed && comment.tags && comment.tags.length > 0 && comment.relativeLine) {
-          let commentProcessed = false
           let section
           let entries = this.DATA.classes.values()
 
-          while (!commentProcessed && !(section = entries.next()).done) {
+          while (!comment.processed && !(section = entries.next()).done) {
             let subsection = section.value.getRelevantSubsnippet(comment.start.line)
 
             if (subsection !== null) {
@@ -484,7 +479,7 @@ class Generator extends ProductionLine {
                       func.applyCommentTag(tag, comment)
                       subsection.methods.set(func.label, func)
                       comment.processed = true
-                      LAST_ENTITY = func
+                      LAST_ENTITY = func // eslint-disable-line no-global-assign
                       break
 
                     case 'property':

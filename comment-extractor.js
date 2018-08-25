@@ -1,6 +1,7 @@
-const RE = /(\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\/)|(\/\/.*)/g
+const RE = /(\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\/)|(\/\/.*)/g // eslint-disable-line
 
 module.exports = code => {
+  let match
   let comments = []
 
   while ((match = RE.exec(code)) !== null) {

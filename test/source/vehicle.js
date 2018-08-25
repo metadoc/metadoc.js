@@ -25,7 +25,7 @@ class VehicleBase {
   }
 
   brake () {
-    this.SPEED = this.SPEED * .9
+    this.SPEED = this.SPEED * 0.9
 
     if (this.SPEED < 1) {
       this.SPEED = 0

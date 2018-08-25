@@ -1,5 +1,5 @@
 {
-  "name": "@ngnjs/metadoc",
+  "name": "@author/metadoc",
   "version": "0.0.3",
   "description": "Generate JSON documentation of OOP-based JavaScript libraries.",
   "bin": "index.js",
@@ -34,14 +34,8 @@
     "ignore": [
       "_*",
       "_**/*",
-      "test/lib/**/*",
+      "test/**/*",
       "node_modules",
-      "dist/**/*",
-      "gulpfile.js",
-      "src/common/data/WIP/**/*",
-      "src/common/data/current/**/*",
-      "rollup*.js",
-      "karma.conf.js",
       "build.js"
     ],
     "globals": [
