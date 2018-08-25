@@ -182,7 +182,7 @@ In addition to tags, there are a number of recognized flags that can be used to 
 
 ## Documenting Parameters
 
-While parameters (function arguments) in JavaScript can have default values, there are still several cases where it is necessary to provide greater detail about parameters. Most specifically, enumeration, where methods only accept a parameter value from a predetermined set.
+While parameters (function arguments) in JavaScript can have default values, there are still several cases where it is necessary to provide greater detail about parameters. For example, some methods only accept a parameter value from a predetermined set (enumeration).
 
 Parameters can be documented with additional detail using the following format:
 
@@ -208,7 +208,7 @@ The example above describes a string parameter named `myParameter`. Acceptable (
 
 ### Documenting Callback Parameters
 
-Callback functions are a unique type of parameter. These parameters may have their own arguments/parameters. This generator supports them using a dot notation syntax:
+Callback functions are a unique type of parameter. These parameters may have their own arguments/parameters. Metadoc supports them using a dot notation syntax:
 
 ```js
 /**
@@ -225,7 +225,7 @@ The comment above indicates a parameter is a callback method that receives two a
 
 ## Documenting Events
 
-NGN ships with an EventEmitter class (works with Node.js `events.EventEmitter`).
+Metadoc was built to document the [NGN](https://github.com/ngnjs) and [Chassis](https://github.com/ngn-chassis) libraries. NGN ships with an event emitter class (works with Node.js `events.EventEmitter`). This class is commonly extended, meaning many classes within the library fire events. As a result, metadoc supports documenting the most common event emitter styles, plus those found in NGN.
 
 The following syntax provides a powerful way to generate event documentation overrides:
 
