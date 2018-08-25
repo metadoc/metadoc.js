@@ -29,8 +29,10 @@ To support greater detail, Metadoc reads inline comment blocks, written directly
 npm install -g @author.io/metadoc
 
 // Run metadoc
-metadoc --generate --source "/path/to/source_directory" --output "/path/to/output_directory"
+metadoc --source "/path/to/source_directory" --output "/path/to/output_directory"
 ```
+
+If you want to use metadoc programatically (i.e. `require('@author.io/metadoc')`), take a look at the [cli.js](https://github.com/author/metadoc/blob/master/cli.js#L4) file as an example (which includes the metadoc generator). The metadoc generator is an extension of [productionline](https://github.com/coreybutler/productionline).
 
 ### Ignoring Files
 
