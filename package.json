@@ -1,5 +1,5 @@
 {
-  "name": "@author/metadoc",
+  "name": "@author.io/metadoc",
   "version": "0.0.3",
   "description": "Generate JSON documentation of OOP-based JavaScript libraries.",
   "bin": "index.js",
