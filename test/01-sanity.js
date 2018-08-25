@@ -7,7 +7,7 @@ const output = path.join(__dirname, 'output')
 const outputFile = path.join(output, 'api.json')
 
 test('Generate Docs', t => {
-  let result = exec(`node "${path.join(__dirname, '../index.js')}" --generate --source "${source}" --output "${output}"`).toString()
+  let result = exec(`node "${path.join(__dirname, '../cli.js')}" --source "${source}" --output "${output}"`).toString()
 
   console.log(`------------\n   OUTPUT\n------------\n${result}\n------------\n\n\n`)
 

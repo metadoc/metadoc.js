@@ -1,6 +1,4 @@
-#!/usr/bin/env node
 const path = require('path')
-const fs = require('fs')
 const ProductionLine = require('productionline')
 const Parser = require('cherow')
 const JSCommentParser = require('comment-parser')
@@ -25,14 +23,7 @@ global.DOC = Object.assign(DOC, {
   Method: require('./lib/Method'),
   Parameter: require('./lib/Parameter'),
   Property: require('./lib/Property'),
-  RawSnippet: require('./lib/Snippet'),
-  config: {
-    warnOnNoCode: false,
-    warnOnSkippedEvents: false,
-    errorOnCommentFailure: true,
-    warnOnSkippedTags: true
-  },
-  audit: new Set()
+  RawSnippet: require('./lib/Snippet')
 })
 
 // Create a last known tag
@@ -47,6 +38,8 @@ class Generator extends ProductionLine {
     cfg.source = path.resolve('./src')
 
     super(cfg)
+
+    this.filecount = 0
 
     this.DATA = {
       globals: [],
@@ -68,25 +61,48 @@ class Generator extends ProductionLine {
       // tolerant: true
     }
 
+    Object.defineProperties(this, {
+      warnOnNoCode: {
+        enumerable: false,
+        value: cfg.hasOwnProperty('warnOnNoCode') ? cfg.warnOnNoCode : false
+      },
+      warnOnSkippedEvents: {
+        enumerable: false,
+        value: cfg.hasOwnProperty('warnOnSkippedEvents') ? cfg.warnOnSkippedEvents : false
+      },
+      errorOnCommentFailure: {
+        enumerable: false,
+        value: cfg.hasOwnProperty('errorOnCommentFailure') ? cfg.errorOnCommentFailure : true
+      },
+      warnOnSkippedTags: {
+        enumerable: false,
+        value: cfg.hasOwnProperty('warnOnSkippedTags') ? cfg.warnOnSkippedTags : true
+      },
+      audit: {
+        enumerable: false,
+        value: new Set()
+      }
+    })
+
     const DISPLAY_WARNING = msg => {
       if (msg.toLowerCase().indexOf('no source code found for') === 0) {
-        if (DOC.config.warnOnNoCode) {
-          this.verysubtle(msg)
+        if (this.warnOnNoCode) {
+          this.verysubtle(`     ${msg}`)
         }
       } else if (msg.toLowerCase().indexOf('failed') >= 0) {
-        if (DOC.config.errorOnCommentFailure) {
-          DOC.audit.add(msg)
+        if (this.errorOnCommentFailure) {
+          this.audit.add(`     ${msg}`)
         }
       } else if (msg.toLowerCase().indexOf('unrecognized/private event emitter') >= 0) {
-        if (DOC.config.warnOnSkippedEvents) {
-          this.warn(msg)
+        if (this.warnOnSkippedEvents) {
+          this.warn(`     ${msg}`)
         }
       } else if (msg.toLowerCase().indexOf('arguments cannot be assigned') >= 0) {
-        if (DOC.config.warnOnSkippedTags) {
-          this.warn(msg)
+        if (this.warnOnSkippedTags) {
+          this.warn(`     ${msg}`)
         }
       } else {
-        this.warn(msg)
+        this.warn(`     ${msg}`)
       }
     }
 
@@ -334,19 +350,6 @@ class Generator extends ProductionLine {
     ns.addClass(Class.label)
   }
 
-  get data () {
-    let data = {
-      // globals: this.DATA.globals,
-      classes: this.expand(this.DATA.classes),
-      exceptions: DOC.Class.prototype.mapToObject(this.DATA.exceptions),
-      // requires: Array.from(this.DATA.requires),
-      bus: DOC.Class.prototype.mapToObject(this.DATA.bus),
-      namespaces: this.expand(this.DATA.namespaces)
-    }
-
-    return data
-  }
-
   expand (map) {
     let data = {}
 
@@ -363,6 +366,8 @@ class Generator extends ProductionLine {
   }
 
   parseFile (file, processorFn) {
+    this.filecount++
+
     LAST_ENTITY = null // eslint-disable-line no-global-assign
 
     let sourcefile = new this.LocalFile(file, this.source)
@@ -517,8 +522,8 @@ class Generator extends ProductionLine {
   createJson () {
     this.addTask('Generate JSON', next => {
       this.walk(this.source).forEach((file, i) => {
-        if (i < 27) {
-          this.subtle('     - Processing', file)
+        if (i < 28) {
+          this.subtle('     Processed', file.replace(this.source, ''))
           try {
             this.parseFile(file)
           } catch (e) {
@@ -614,56 +619,19 @@ class Generator extends ProductionLine {
       next()
     })
   }
+
+  get data () {
+    let data = {
+      // globals: this.DATA.globals,
+      classes: this.expand(this.DATA.classes),
+      exceptions: DOC.Class.prototype.mapToObject(this.DATA.exceptions),
+      // requires: Array.from(this.DATA.requires),
+      bus: DOC.Class.prototype.mapToObject(this.DATA.bus),
+      namespaces: this.expand(this.DATA.namespaces)
+    }
+
+    return data
+  }
 }
 
-const Builder = new Generator({
-  commands: {
-    'default': () => {
-      console.log('yo')
-    },
-    '--generate': () => {
-      if (process.argv.indexOf('--warnnocode') >= 0) {
-        DOC.config.warnOnNoCode = true
-      }
-
-      if (process.argv.indexOf('--warnskippedevents') >= 0) {
-        DOC.config.warnOnSkippedEvents = true
-      }
-
-      process.argv.forEach((arg, index) => {
-        if (arg.trim().toLowerCase() === '--ignore') {
-          let filepath = process.argv[index + 1]
-          let stat = fs.statSync(process.argv[index + 1])
-
-          if (stat.isDirectory) {
-            Builder.ignorePath(filepath)
-          } else if (stat.isFile) {
-            Builder.ignoreFile(filepath)
-          }
-        }
-      })
-
-      Builder.source = process.argv[process.argv.indexOf('--source') + 1]
-
-      if (process.argv.indexOf('--output')) {
-        Builder.output = process.argv[process.argv.indexOf('--output') + 1]
-      } else {
-        Builder.output = path.join(process.cwd(), './docs')
-      }
-
-      Builder.clean()
-      Builder.createJson()
-      Builder.structureJson()
-      Builder.on('complete', () => {
-        require('fs').writeFileSync(path.join(Builder.output, 'api.json'), JSON.stringify(Builder.data, null, 2))
-        // require('fs').writeFileSync(path.resolve('./test.json'), JSON.stringify(Builder.data, null, 2))
-
-        DOC.audit.forEach(log => Builder.failure(log))
-      })
-    }
-  }
-})
-
-process.on('uncaughtException', e => console.log(e))
-
-Builder.run()
+module.exports = Generator
