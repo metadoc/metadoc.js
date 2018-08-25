@@ -26,7 +26,7 @@ To support greater detail, Metadoc reads inline comment blocks, written directly
 
 ```js
 // Install metadoc
-npm install -g @ngnjs/metadoc
+npm install -g @author.io/metadoc
 
 // Run metadoc
 metadoc --generate --source "/path/to/source_directory" --output "/path/to/output_directory"
