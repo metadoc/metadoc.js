@@ -169,8 +169,8 @@ Indicates a property is only writable.
 In addition to tags, there are a number of recognized flags that can be used to annotate a documentation snippet.
 
 - `@protected` Identifies a protected method/attribute.
-- * `@deprecated` Indicates the feature will no longer be available in a future version.
-- * `@experimental` Indicates the feature is not considered "production ready".
+- `@deprecated` Indicates the feature will no longer be available in a future version.
+- `@experimental` Indicates the feature is not considered "production ready".
 - `@warning` Provides a warning message.
 - `@hidden` Indicates the feature should be hidden but not removed from the documentation.
 - `@singleton` Indicates a class is a singleton.
@@ -182,9 +182,9 @@ In addition to tags, there are a number of recognized flags that can be used to 
 
 ## Documenting Parameters
 
-While parameters (arguments) in JavaScript functions can have default values, there are still several cases where it is necessary to override the default parameter documentation. Most specifically, enumeration. Some methods only accept a value from a predetermined set.
+While parameters (function arguments) in JavaScript can have default values, there are still several cases where it is necessary to provide greater detail about parameters. Most specifically, enumeration, where methods only accept a parameter value from a predetermined set.
 
-Parameters can be documented with additonal detail using the following format:
+Parameters can be documented with additional detail using the following format:
 
 ```js
 /**
