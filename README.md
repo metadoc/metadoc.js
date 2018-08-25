@@ -8,7 +8,7 @@ Metadoc was designed as command line utility, but can also be used programmatica
 
 Metadoc was designed to support a "code and comment" workflow. It will parse JavaScript code and extract as much metadata as possible from the code's [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
-AST parsing creates a significant amount of information, but isn't always sufficient for creating detailed information, such as class inheritance chains.
+AST parsing creates a significant amount of information, but isn't always sufficient for creating detailed documentation, such as class inheritance chains.
 
 To support greater detail, Metadoc reads inline comment blocks, written directly in the code. Comments can be used to supplement and/or override AST parsing. Comment parsing follows a style similar to JSDoc. Using a familiar `@tag` syntax, Metadoc provides powerful capabilities for creating fine detail in documentation.
 
