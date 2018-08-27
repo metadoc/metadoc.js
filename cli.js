@@ -13,13 +13,18 @@ const Builder = new Generator({
       process.argv.forEach((arg, index) => {
         if (arg.trim().toLowerCase() === '--ignore') {
           let filepath = process.argv[index + 1]
-          let stat = fs.statSync(process.argv[index + 1])
+          let filepathExists = true
 
-          if (stat.isDirectory) {
-            Builder.ignorePath(filepath)
-          } else if (stat.isFile) {
-            Builder.ignoreFile(filepath)
-          }
+          try {
+            fs.accessSync(filepath, fs.R_OK)
+            let stat = fs.statSync(process.argv[index + 1])
+
+            if (stat.isDirectory) {
+              Builder.ignorePath(filepath)
+            } else if (stat.isFile) {
+              Builder.ignoreFile(filepath)
+            }
+          } catch (e) {}
         }
       })
 
