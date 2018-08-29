@@ -41,9 +41,12 @@ const Builder = new Generator({
       Builder.structureJson()
 
       Builder.on('complete', () => {
-        fs.writeFileSync(path.join(Builder.output, 'api.json'), JSON.stringify(Builder.data, null, 2))
+        let content = JSON.stringify(Builder.data, null, 2)
+        fs.writeFileSync(path.join(Builder.output, 'api.json'), content)
         Builder.audit.forEach(log => Builder.failure(log))
         Builder.highlight(`  Processed ${Builder.filecount} file${Builder.filecount === 1 ? '' : 's'}.\n`)
+
+        process.stdout.write(content)
       })
     }
   }

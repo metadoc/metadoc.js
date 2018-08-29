@@ -303,3 +303,7 @@ The major difference is the comma separated data types (`{Object,String}`), whic
 `@fires {a:Object,b:String}` would generate a label called `a` for the `Object` argument and a label called `b` for the `String` object.
 
 It is also possible for an argument to have more than one valid data type by separating types with the pipe `|` character. For example, `@fires {a:Object|Boolean,b:String}` states that the first argument (labeled `a`) can be an `Object` or `Boolean` value.
+
+# Post Processors
+
+- [metadoc-md](https://github.com/author/metadoc-md): Convert markdown, mermaid, and mathjax descriptions to HTML.
