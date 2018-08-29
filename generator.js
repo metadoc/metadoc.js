@@ -443,16 +443,11 @@ class Generator extends ProductionLine {
           comment.tags = comment.tags.filter(tag => {
             switch (tag.tag.toLowerCase()) {
               case 'namespace':
-                let ns = new DOC.Namespace(null, sourcefile)
+                let ns = this.addNamespace(tag.value || tag.name, null, null, sourcefile)
 
-                ns.label = tag.value || tag.name
                 ns.description = tag.description || null
 
                 LAST_ENTITY = ns // eslint-disable-line no-global-assign
-
-                if (!ns.ignore) {
-                  BUS.emit('register.namespace', ns)
-                }
 
                 return false
 

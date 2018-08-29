@@ -13,7 +13,6 @@ const Builder = new Generator({
       process.argv.forEach((arg, index) => {
         if (arg.trim().toLowerCase() === '--ignore') {
           let filepath = process.argv[index + 1]
-          let filepathExists = true
 
           try {
             fs.accessSync(filepath, fs.R_OK)
@@ -46,7 +45,7 @@ const Builder = new Generator({
         Builder.audit.forEach(log => Builder.failure(log))
         Builder.highlight(`  Processed ${Builder.filecount} file${Builder.filecount === 1 ? '' : 's'}.\n`)
 
-        if (process.env.npm_lifecycle_script.indexOf('|') > 0) {
+        if (process.env.npm_lifecycle_script && process.env.npm_lifecycle_script.indexOf('| metadoc') > 0) {
           process.stdout.write(content)
         }
       })

@@ -128,6 +128,10 @@ Maintains a series of tags with additional information.
 
 Identifies a method.
 
+### @namespace
+
+Identifies a namespace. Namespaces identify class structure/hierarchy and cannot be ignored or hidden using `@ignore` or `@hidden`.
+
 ### @param
 
 Identifies an argument/paramenter. See "Documenting Parameters" for details.
@@ -177,6 +181,8 @@ In addition to tags, there are a number of recognized flags that can be used to 
 - `@interface` Indicates a class is an interface.
 - `@static` Indicates a method is static.
 - `@since`* Identifies the version and/or date when the feature is generally available. This is typically used to identify new features that have been added to the original platform.
+
+It is also possible to create a custom flag using `@flag <flag_name>`.
 
 ---
 
