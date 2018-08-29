@@ -275,39 +275,56 @@ class Generator extends ProductionLine {
   addNamespace (namespace, parent = null, node = null, source = null) {
     parent = parent || this.DATA
 
+    // Process a namespace class
     if (namespace instanceof DOC.Namespace) {
-      let existing = this.getNamespace(namespace.label)
+      let scope = namespace.label.split('.')
 
-      if (existing) {
-        let parentName = namespace.label.split('.')
-        let name = parentName.pop()
-        let parentNS = this.getNamespace(parentName.join('.')) || parent
-
-        namespace.label = name
-        parentNS.namespaces.set(namespace.label, namespace)
-      } else {
-        this.addNamespace(namespace.label, parent, node, source)
-        this.addNamespace(...arguments)
+      // Non-nested namespace
+      if (scope.length === 1) {
+        parent.namespaces.set(namespace.label, namespace)
+        return namespace
       }
-    } else {
-      let scope = namespace.split('.')
-      let currentScope = []
 
-      while (scope.length > 0) {
-        let name = scope.shift()
-        currentScope.push(name)
+      // Nested namespace
+      let name = scope.pop()
+      parent = this.addNamespace(scope.join('.'), parent, node, source)
+      parent.label = name
 
-        let existing = this.getNamespace(currentScope.join())
-
-        if (!existing) {
-          let NS = new DOC.Namespace(node, source)
-          NS.label = name
-
-          parent.namespaces.set(name, NS)
-          parent = NS
-        }
-      }
+      return parent
     }
+
+    // Process a text-only namespace identification
+    if (typeof namespace !== 'string') {
+      throw new Error(`Cannot create a namespace for a ${typeof namespace} variable. Use a string or Namespace object to identify a namespace.`)
+    }
+
+    let existing = this.getNamespace(namespace)
+
+    if (existing) {
+      return existing
+    }
+
+    let chain = []
+
+    namespace.split('.').forEach(ns => {
+      chain.push(ns)
+
+      let current = this.getNamespace(chain.join('.'))
+
+      if (current) {
+        parent = current
+      } else {
+        let nestedNamespace = new DOC.Namespace(node, source)
+
+        nestedNamespace.label = ns
+
+        parent.namespaces.set(nestedNamespace.label, nestedNamespace)
+
+        parent = nestedNamespace
+      }
+    })
+
+    return parent
   }
 
   getNamespace (nspath) {
@@ -320,11 +337,7 @@ class Generator extends ProductionLine {
       if (ns.namespaces.has(name)) {
         ns = ns.namespaces.get(name)
       } else {
-        if (ns instanceof DOC.Namespace) {
-          return ns
-        } else {
-          return null
-        }
+        return null
       }
     }
 

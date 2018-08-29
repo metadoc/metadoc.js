@@ -46,7 +46,9 @@ const Builder = new Generator({
         Builder.audit.forEach(log => Builder.failure(log))
         Builder.highlight(`  Processed ${Builder.filecount} file${Builder.filecount === 1 ? '' : 's'}.\n`)
 
-        process.stdout.write(content)
+        if (process.env.npm_lifecycle_script.indexOf('|') > 0) {
+          process.stdout.write(content)
+        }
       })
     }
   }
