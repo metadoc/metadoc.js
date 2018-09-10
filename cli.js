@@ -47,6 +47,7 @@ const Builder = new Generator({
 
         if (process.env.npm_lifecycle_script && process.env.npm_lifecycle_script.indexOf('| metadoc') > 0) {
           process.stdout.write(content)
+          process.exit(0)
         }
       })
     }
