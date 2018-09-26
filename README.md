@@ -313,3 +313,4 @@ It is also possible for an argument to have more than one valid data type by sep
 # Post Processors
 
 - [metadoc-md](https://github.com/author/metadoc-md): Convert markdown, mermaid, and mathjax descriptions to HTML.
+- [metadoc-api](https://github.com/author/metadoc-api): Generate a static JSON API (splits metadoc up into individual JSON files for serving over HTTP).
