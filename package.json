@@ -1,8 +1,10 @@
 {
   "name": "@author.io/metadoc",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Generate JSON documentation of OOP-based JavaScript libraries.",
-  "bin": "cli.js",
+  "bin": {
+    "metadoc": "cli.js"
+  },
   "main": "generator.js",
   "scripts": {
     "test": "tap -R spec test/*.js && standard --verbose | snazzy",

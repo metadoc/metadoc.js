@@ -16,8 +16,8 @@ global.DOC = {
 
 // Assign classes in a globally accessible manner.
 global.DOC = Object.assign(DOC, {
-  Namespace: require('./lib/namespace'),
-  Class: require('./lib/class'),
+  Namespace: require('./lib/Namespace'),
+  Class: require('./lib/Class'),
   Exception: require('./lib/NGNException'),
   Event: require('./lib/Event'),
   Method: require('./lib/Method'),

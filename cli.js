@@ -47,11 +47,13 @@ const Builder = new Generator({
 
         if (process.env.npm_lifecycle_script && process.env.npm_lifecycle_script.indexOf('| metadoc') > 0) {
           process.stdout.write(content)
-          process.exit(0)
+          // process.exit(0)
         }
       })
     }
   }
 })
+
+// process.on('uncaughtException', e => console.log(e.message, e.stack))
 
 Builder.run()
