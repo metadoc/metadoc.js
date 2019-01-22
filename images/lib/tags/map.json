@@ -21,6 +21,5 @@
   "static": "flag",
   "since": "flag",
   "prop": "property",
-  "hide": "hidden",
-  "type": "typedef"
+  "hide": "hidden"
 }

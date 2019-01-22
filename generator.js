@@ -47,7 +47,8 @@ class Generator extends ProductionLine {
       classes: new Map(),
       exceptions: new Map(),
       bus: new Map(), // NGN.BUS events
-      namespaces: new Map()
+      namespaces: new Map(),
+      types: new Map() // Type Definitions
     }
 
     this.STANDARD_OPTIONS = {
@@ -158,6 +159,14 @@ class Generator extends ProductionLine {
     // Recognize global custom exceptions
     BUS.on('register.exception', e => {
       this.DATA.exceptions.set(e.label, e)
+    })
+
+    // Recognize custom types
+    BUS.on('register.type', definition => {
+      const name = definition.name
+      delete definition.name
+
+      this.DATA.types.set(name, definition)
     })
 
     BUS.on('ignore', snippet => DISPLAY_WARNING(`Ignored ${snippet.label} ${snippet.type} at ${snippet.sourcefile}:${snippet.start.line}:${snippet.start.column}`))
@@ -518,7 +527,24 @@ class Generator extends ProductionLine {
     }
 
     // Notify when a tag cannot be proceesed.
+    let mapping = require('./lib/tags/map.json')
+
     sourcefile.comments.forEach(comment => {
+      // Test comments for tags representing independent entities (like type definitions)
+      if (comment.tags && comment.tags.length > 0) {
+        comment.tags.forEach(tag => {
+          let name = tag.tag.toLowerCase()
+
+          name = mapping[name] || name
+
+          try {
+            let TagProcessor = require(require('path').join(__dirname, `./lib/tags/${name}.js`))
+            let Representation = new TagProcessor(tag, null, null, sourcefile) // eslint-disable-line no-unused-vars
+            comment.processed = true
+          } catch (e) {}
+        })
+      }
+
       // console.log(comment)
       if (!comment.processed && comment.tags && comment.tags.length > 0 && comment.relativeLine) {
         this.warn(`Generator could not recognize associated code or does not understand how to process comment at ${sourcefile.relativePath}:${comment.start.line}${comment.start.line !== comment.end.line ? '-' + comment.end.line : ''}`)
@@ -635,7 +661,8 @@ class Generator extends ProductionLine {
       exceptions: DOC.Class.prototype.mapToObject(this.DATA.exceptions),
       // requires: Array.from(this.DATA.requires),
       bus: DOC.Class.prototype.mapToObject(this.DATA.bus),
-      namespaces: this.expand(this.DATA.namespaces)
+      namespaces: this.expand(this.DATA.namespaces),
+      types: this.expand(this.DATA.types)
     }
 
     return data

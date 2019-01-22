@@ -38,7 +38,7 @@ test('Generate Docs', t => {
 test('Output Integrity', t => {
   const data = require(outputFile)
 
-  let classCount = require('fs').readdirSync(path.join(__dirname, 'source')).length - 1 // accounts for file.
+  let classCount = require('fs').readdirSync(path.join(__dirname, 'source')).length - 2 // accounts for namespace & comments file.
 
   t.ok(data.classes, 'Class documentation exists.')
   t.ok(Object.keys(data.classes).length === classCount, 'Correct number of classes documented.')

@@ -1,4 +1,4 @@
-# NGN Metadoc
+# Metadoc
 
 Metadoc generates documentation _metadata_ for Object Oriented (Class) JavaScript libraries. Running the utility will produce a JSON file describing the code. This can be used as a data source for creating custom HTML documentation (or any other output format), or for further processing.
 
@@ -163,6 +163,43 @@ Aliases: `returns`
 This is a special tag that annotates the documentation with a known task that requires completion (a developer to-do task).
 
 Format: `@todo Describe the task here`
+
+### @typedef
+
+This is a special tag that defines a _simple_ custom type. JavaScript does not enforce types (a weakly typed language). This tag allows developers to document general guidelines for arbitrary simplistic data structures. This is useful when the same type of data is used/expected repeatedly within a code base.
+
+Format: ```
+/**
+ * @typedef {<type>} <name> (<options>)
+ * <description>
+ */
+```
+
+The `<type>` can be any valid JavaScript primitive, such as `object`, `string`, `number`, etc. The `<name>` should describe the data type uniquely throughout the entire code base. `(<options>)` is an optional list of possible values (enumeration). `<description>` is a custom description of the data type.
+
+For example:
+
+```
+/**
+ * @typedef {Error} MyError
+ * This is my custom error.
+ */
+```
+
+The example above defines a data type called `MyError`, which is a custom error.
+
+An example using options:
+
+```
+/**
+ * @typedef {String} MyLetter (a, b, c)
+ * Identifies my favorite letter.
+ */
+```
+
+This example recognizes a type called `MyLetter`, a string, which can have `a`, `b`, or `c` as valid values.
+
+Aliases: `@type`
 
 ### @writeonly
 
