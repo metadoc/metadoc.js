@@ -122,7 +122,14 @@ Indicates a section should be ignored from the documentation (i.e. prevents gene
 
 ### @info
 
-Maintains a series of tags with additional information.
+Keep information separated from descriptions, such has help comments or tooltips. Use of multiple @info tags are supported.
+
+This tag also supports content titles:
+
+```
+@info title goes here
+primary content goes here.
+```
 
 ### @method
 
