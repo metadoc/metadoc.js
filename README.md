@@ -175,7 +175,9 @@ Format: `@todo Describe the task here`
 
 This is a special tag that defines a _simple_ custom type. JavaScript does not enforce types (a weakly typed language). This tag allows developers to document general guidelines for arbitrary simplistic data structures. This is useful when the same type of data is used/expected repeatedly within a code base.
 
-Format: ```
+Format:
+
+```
 /**
  * @typedef {<type>} <name> (<options>)
  * <description>
