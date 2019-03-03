@@ -126,9 +126,11 @@ Keep information separated from descriptions, such has help comments or tooltips
 
 This tag also supports content titles:
 
-```
-@info title goes here
-primary content goes here.
+```js
+/**
+ * @info title goes here
+ * primary content goes here.
+ */
 ```
 
 ### @method
@@ -177,7 +179,7 @@ This is a special tag that defines a _simple_ custom type. JavaScript does not e
 
 Format:
 
-```
+```js
 /**
  * @typedef {<type>} <name> (<options>)
  * <description>
