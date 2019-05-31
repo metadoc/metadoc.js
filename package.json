@@ -1,6 +1,6 @@
 {
   "name": "@author.io/metadoc",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Generate JSON documentation of OOP-based JavaScript libraries.",
   "bin": {
     "metadoc": "cli.js"
