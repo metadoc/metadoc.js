@@ -23,7 +23,8 @@ global.DOC = Object.assign(DOC, {
   Method: require('./lib/Method'),
   Parameter: require('./lib/Parameter'),
   Property: require('./lib/Property'),
-  RawSnippet: require('./lib/Snippet')
+  RawSnippet: require('./lib/Snippet'),
+  TypeDefinition: require('./lib/TypeDefinition')
 })
 
 // Create a last known tag
@@ -163,6 +164,11 @@ class Generator extends ProductionLine {
 
     // Recognize custom types
     BUS.on('register.type', definition => {
+      if (definition instanceof DOC.TypeDefinition) {
+        this.DATA.types.set(definition.label, definition.data)
+        return
+      }
+
       const name = definition.name
       delete definition.name
 
@@ -405,6 +411,7 @@ class Generator extends ProductionLine {
     const snippets = []
 
     // Traverse the AST and identify elements.
+    // Looking for classes and NGN-specific methods.
     traverse(ast).forEach(function () {
       try {
         if (this.isLeaf) {
@@ -465,7 +472,7 @@ class Generator extends ProductionLine {
                   LAST_ENTITY.processOrphanComment(comment)
                 }
 
-                return true
+                return false
             }
           })
         }
@@ -477,7 +484,6 @@ class Generator extends ProductionLine {
     // Process any orphan comments within classes
     if (this.DATA.classes) {
       sourcefile.comments.forEach(comment => {
-        // console.log(comment)
         if (!comment.processed && comment.tags && comment.tags.length > 0 && comment.relativeLine) {
           let section
           let entries = this.DATA.classes.values()
@@ -492,9 +498,7 @@ class Generator extends ProductionLine {
                   let name = tag.tag.toLowerCase()
 
                   name = mapping[name] || name
-
                   tag.value = tag.name
-
                   switch (name) {
                     case 'method':
                       let func = new DOC.Method(null, subsection.SOURCE)
@@ -556,7 +560,7 @@ class Generator extends ProductionLine {
   createJson () {
     this.addTask('Generate JSON', next => {
       this.walk(this.source).forEach((file, i) => {
-        if (i < 28) {
+        if (i < 1) {
           this.subtle('     Processed', file.replace(this.source, ''))
           try {
             this.parseFile(file)
