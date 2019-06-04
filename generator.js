@@ -165,14 +165,15 @@ class Generator extends ProductionLine {
     // Recognize custom types
     BUS.on('register.type', definition => {
       if (definition instanceof DOC.TypeDefinition) {
-        this.DATA.types.set(definition.label, definition.data)
+        this.DATA.types.set(definition.label.toLowerCase(), definition.data)
         return
       }
 
       const name = definition.name
       delete definition.name
+      definition.label = name
 
-      this.DATA.types.set(name, definition)
+      this.DATA.types.set(name.toLowerCase(), definition)
     })
 
     BUS.on('ignore', snippet => DISPLAY_WARNING(`Ignored ${snippet.label} ${snippet.type} at ${snippet.sourcefile}:${snippet.start.line}:${snippet.start.column}`))
@@ -378,6 +379,25 @@ class Generator extends ProductionLine {
     ns.addClass(Class.label)
   }
 
+  addTypeDefinition (name, node = null, source = null) {
+    let existing = this.getTypeDefinition(name)
+
+    if (existing) {
+      return existing
+    }
+
+    let def = new DOC.TypeDefinition(node, source)
+    def.label = name
+
+    BUS.emit('register.type', def)
+
+    return def
+  }
+
+  getTypeDefinition (name) {
+    return this.DATA.types.get(name)
+  }
+
   expand (map) {
     let data = {}
 
@@ -444,6 +464,20 @@ class Generator extends ProductionLine {
                 }
 
                 break
+
+              // case 'identifier':
+              //   if (this.parent.node.name === 'NGN') {
+              //     // console.log(this.parent.parent.node)
+              //   }
+              //
+              //   break
+              //
+              // case 'objectexpression':
+              //   console.log(this.parent.node.properties)
+              //   break
+              //
+              // default:
+                // console.log(this.node.toLowerCase())
             }
           }
         }
@@ -454,27 +488,46 @@ class Generator extends ProductionLine {
 
     // Process global comment tags
     try {
+      let tagmap = require('./lib/tags/map.json')
       sourcefile.comments.forEach(comment => {
         if (!comment.processed && comment.tags && comment.relativeLine) {
-          comment.tags = comment.tags.filter(tag => {
-            switch (tag.tag.toLowerCase()) {
-              case 'namespace':
-                let ns = this.addNamespace(tag.value || tag.name, null, null, sourcefile)
+          let def = comment.tags.filter(tag => tag.tag.toLowerCase() === 'typedef' || tagmap[tag.tag.toLowerCase()] === 'typedef').length > 0
 
-                ns.description = tag.description || null
+          if (def) {
+            comment.tags.filter(tag => {
+              if (tag.tag.toLowerCase() === 'typedef' || tagmap[tag.tag.toLowerCase()] === 'typedef') {
+                def = this.addTypeDefinition(tag.value || tag.name, null, sourcefile)
 
-                LAST_ENTITY = ns // eslint-disable-line no-global-assign
-
-                return false
-
-              default:
-                if (LAST_ENTITY !== null) {
-                  LAST_ENTITY.processOrphanComment(comment)
-                }
+                def.description = tag.description || null
 
                 return false
-            }
-          })
+              }
+
+              return true
+            }).forEach(tag => def.processOrphanComment(comment))
+
+            comment.tags = []
+          } else {
+            comment.tags = comment.tags.filter((tag, i) => {
+              switch (tag.tag.toLowerCase()) {
+                case 'namespace':
+                  let ns = this.addNamespace(tag.value || tag.name, null, null, sourcefile)
+
+                  ns.description = tag.description || null
+
+                  LAST_ENTITY = ns
+
+                  return false
+
+                default:
+                  if (LAST_ENTITY !== null) {
+                    LAST_ENTITY.processOrphanComment(comment)
+                  }
+
+                  return false
+              }
+            })
+          }
         }
       })
     } catch (e) {
