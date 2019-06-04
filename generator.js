@@ -613,14 +613,14 @@ class Generator extends ProductionLine {
   createJson () {
     this.addTask('Generate JSON', next => {
       this.walk(this.source).forEach((file, i) => {
-        if (i < 1) {
+        // if (i < 1) {
           this.subtle('     Processed', file.replace(this.source, ''))
           try {
             this.parseFile(file)
           } catch (e) {
             console.error(e)
           }
-        }
+        // }
       })
 
       next()
