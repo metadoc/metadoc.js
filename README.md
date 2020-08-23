@@ -1,8 +1,14 @@
-# Metadoc
+<h1 align="center">Metadoc.js</h1>
 
 Metadoc generates documentation _metadata_ for Object Oriented (Class) JavaScript libraries. Running the utility will produce a JSON file describing the code. This can be used as a data source for creating custom HTML documentation (or any other output format), or for further processing.
 
 Metadoc was designed as command line utility, but can also be used programmatically. It is a custom extension of the [productionline](https://github.com/coreybutler/productionline) build utility (from the same authors of this tool). It was originally designed to document the [NGN](https://github.com/ngnjs) and [Chassis](https://github.com/ngn-chassis) libraries.
+
+---
+
+**Project Update**: We are re-engineering this libary. There will still be support for OOP-style JS, but we want to add support for ES modules and other new development patterns. There is no ETA at this time, since our priority is on launching the debut of metadoc.io.
+
+---
 
 ## Workflow
 
